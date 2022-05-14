@@ -16,20 +16,19 @@ namespace WeatherLibrary.Helpers
 
         public static ConfigHelper Instance { get { return helper.Value; } }
 
-        private ConfigHelper(){ }
+        private ConfigHelper() { }
 
-        private static readonly string dirName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Weather\");
+        public readonly string dirName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Weather\");
         private static readonly string locatationsFile = "Locations.cfg";
-        private static readonly string appSettingsFile = "AppSettings.cfg";
+        public readonly string appSettingsFile = "AppSettings.cfg";
 
         public void CreateConfig()
         {
             if (!Directory.Exists(dirName))
                 Directory.CreateDirectory(dirName);
-            if (!File.Exists(dirName + locatationsFile)) 
+            if (!File.Exists(dirName + locatationsFile))
                 File.Create(dirName + locatationsFile).Close();
-            if (!File.Exists(dirName + appSettingsFile))
-            {
+            if (!File.Exists(dirName + appSettingsFile)) {
                 File.Create(dirName + appSettingsFile).Close();
                 WriteDefaultValues();
             }
@@ -41,10 +40,8 @@ namespace WeatherLibrary.Helpers
         {
             List<string> lines = new List<string>();
 
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                while (!sr.EndOfStream)
-                {
+            using (StreamReader sr = new StreamReader(filePath)) {
+                while (!sr.EndOfStream) {
                     lines.Add(sr.ReadLine());
                 }
 
@@ -58,8 +55,7 @@ namespace WeatherLibrary.Helpers
         {
             List<Location> locations = new List<Location>();
 
-            foreach (string line in ReadConfig(dirName + locatationsFile))
-            {
+            foreach (string line in ReadConfig(dirName + locatationsFile)) {
                 locations.Add(GetLocationFromString(line));
             }
 
@@ -76,19 +72,16 @@ namespace WeatherLibrary.Helpers
         {
             StringBuilder sb = new StringBuilder();
             int A = 255;
-            int R =255;
+            int R = 255;
             int B = 255;
             int G = 255;
             int semicolonCount = 0;
-            for (int i = 11; i < s.Length; i++)
-            {
+            for (int i = 11; i < s.Length; i++) {
                 if (s[i] != ';')
                     sb.Append(s[i]);
-                else
-                {
+                else {
                     semicolonCount++;
-                    switch (semicolonCount)
-                    {
+                    switch (semicolonCount) {
                         case 1:
                             A = Convert.ToInt32(sb.ToString());
                             sb.Clear();
@@ -106,9 +99,9 @@ namespace WeatherLibrary.Helpers
                             sb.Clear();
                             break;
                     }
-                }   
+                }
             }
-            return Color.FromArgb(A,R, G, B);
+            return Color.FromArgb(A, R, G, B);
         }
 
         private Location GetLocationFromString(string locationString)
@@ -117,15 +110,12 @@ namespace WeatherLibrary.Helpers
             int semicolonCount = 0;
             Location location = new Location();
 
-            for (int i = 0; i < locationString.Length; i++)
-            {
+            for (int i = 0; i < locationString.Length; i++) {
                 if (locationString[i] != ';')
                     sb.Append(locationString[i]);
-                else
-                {
+                else {
                     semicolonCount++;
-                    switch (semicolonCount)
-                    {
+                    switch (semicolonCount) {
                         case 1:
                             location.Latitude = (float)Convert.ToDouble(sb.ToString());
                             break;
@@ -154,8 +144,7 @@ namespace WeatherLibrary.Helpers
         private string ConverToString(List<string> lines)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (string line in lines)
-            {
+            foreach (string line in lines) {
                 sb.AppendLine(line);
             }
             return sb.ToString();
@@ -164,25 +153,21 @@ namespace WeatherLibrary.Helpers
         public Color GetColor()
         {
             List<string> lines = ReadConfig(dirName + appSettingsFile);
-            foreach (string line in lines)
-            {
-                if (line.Contains("Background"))
-                {
+            foreach (string line in lines) {
+                if (line.Contains("Background")) {
                     Color color = GetColorFromString(line);
                     return GetColorFromString(line);
                 }
             }
-            return Color.FromArgb(255,255, 255, 255);
+            return Color.FromArgb(255, 255, 255, 255);
         }
 
         public void AddColorTheme(Color color)
         {
             List<string> lines = ReadConfig(dirName + appSettingsFile);
 
-            for (int i = 0; i < lines.Count; i++)
-            {
-                if (lines[i].Contains("Background:"))
-                {
+            for (int i = 0; i < lines.Count; i++) {
+                if (lines[i].Contains("Background:")) {
                     lines.RemoveAt(i);
                     lines.Add($"Background:{color.A};{color.R};{color.G};{color.B};");
                 }
@@ -192,12 +177,20 @@ namespace WeatherLibrary.Helpers
 
         public void SaveConfig(string filePath, string content, bool append)
         {
-            using (StreamWriter sw = new StreamWriter(filePath, append))
-            {
+            using (StreamWriter sw = new StreamWriter(filePath, append)) {
                 sw.WriteLine(content);
                 if (sw != null)
                     sw.Dispose();
             }
+        }
+
+        public void EditConfig(string filePath, string lineName, string newLine)
+        {
+            List<string> lines = File.ReadAllLines(filePath).ToList();
+            lines.Remove(lines.FirstOrDefault(l => l.Contains(lineName)));
+            lines.Add(newLine);
+
+            File.WriteAllLines(filePath, lines);
         }
 
         public void SaveLocation(Location location, bool append)
@@ -208,7 +201,7 @@ namespace WeatherLibrary.Helpers
 
         public void RemoveLocation(int index)
         {
-            List <Location> locations = GetLocations();
+            List<Location> locations = GetLocations();
             locations.RemoveAt(index);
 
             bool append = false;
@@ -216,8 +209,7 @@ namespace WeatherLibrary.Helpers
             if (locations.Count == 0)
                 SaveConfig(dirName + locatationsFile, string.Empty, false);
 
-            foreach (Location location in locations)
-            {
+            foreach (Location location in locations) {
                 SaveLocation(location, append);
                 append = true;
             }

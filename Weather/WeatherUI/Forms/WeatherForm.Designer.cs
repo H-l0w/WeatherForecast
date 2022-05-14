@@ -239,6 +239,7 @@ namespace WeatherUI.Forms
             this.Controls.Add(this.lblLocationDetails);
             this.Name = "WeatherForm";
             this.Text = "WeatherForm";
+            this.Load += new System.EventHandler(this.WeatherForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

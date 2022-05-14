@@ -16,14 +16,23 @@ namespace WeatherUI.Forms
         private readonly LocationFactory locationFactory;
         public Location SelectedLocation { get; set; }
         private bool StartNewWindow { get; set; }
+        private bool isApiKeyValid;
+        private bool ignoreMessageBox;
 
         List<Location> Locations { get; set; }
-        public LocationForm(bool startNewWindow)
+        public LocationForm(bool startNewWindow, bool isApiKeyValid = true)
         {
             StartNewWindow = startNewWindow;
+            this.isApiKeyValid = isApiKeyValid;
             locationFactory = new LocationFactory();
             InitializeComponent();
             addColumns();
+        }
+
+        private void LocationForm_Load(object sender, EventArgs e)
+        {
+            if (!isApiKeyValid)
+                MessageBox.Show(this, "Api key is not valid, please edit it in settings", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void addColumns()
@@ -52,9 +61,20 @@ namespace WeatherUI.Forms
 
             List<Location> locations = await getLocaions();
 
-            if (locations == null)
+            if ((locations == null && !ignoreMessageBox))
             {
                 MessageBox.Show("Unable to find location");
+                return;
+            }
+
+            if (locations.Count == 0) {
+                MessageBox.Show("Unable to find location");
+                return;
+            }
+
+            
+            if (locations == null) {
+                ignoreMessageBox = false;
                 return;
             }
 
@@ -93,8 +113,14 @@ namespace WeatherUI.Forms
                 Locations = await locationFactory.GetLocations(txtLocation.Text, 10);
                 return Locations;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                if (e.Message == "Response status code does not indicate success: 401 (Unauthorized).") {
+                    MessageBox.Show(this, "Api key is not valid, please edit it in settings", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ignoreMessageBox = true;
+                }
+                else 
+                    MessageBox.Show(this, "Error while searching locations", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }

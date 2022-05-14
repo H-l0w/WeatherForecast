@@ -28,5 +28,23 @@ namespace WeatherUI.Forms
                 }
             }
         }
+
+        private void btnEditApiKey_Click(object sender, EventArgs e)
+        {
+            EditApiKeyForm form = new EditApiKeyForm();
+            form.ShowDialog();
+        }
+
+        private void btnEditSavedLocation_Click(object sender, EventArgs e)
+        {
+            SavedLocationsForm form = new SavedLocationsForm();
+            form.Show();
+        }
+
+        private void ApplicationSettingsForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
+        }
     }
 }

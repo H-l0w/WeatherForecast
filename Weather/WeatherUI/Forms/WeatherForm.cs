@@ -23,9 +23,11 @@ namespace WeatherUI.Forms
         private List<HourInfo> Infos = new List<HourInfo>();
         private Data DataEnum = Data.Temperature;
         private int actualDay;
-        public WeatherForm(List<Location> locations)
+        private bool isApiKeyValid;
+        public WeatherForm(List<Location> locations, bool isApiKeyValid = true)
         {
             this.Locations = locations;
+            this.isApiKeyValid = isApiKeyValid;
             Task.Run(async () =>
             {
                 WeatherForecast = await weatherFactory.GetWeatherForecast(locations[actualLocationIndex]);
@@ -39,6 +41,12 @@ namespace WeatherUI.Forms
             btnPrevious.Enabled = false;
             if (locations.Count == 0)
                 btnNext.Enabled = false;
+        }
+
+        private void WeatherForm_Load(object sender, EventArgs e)
+        {
+            if (!isApiKeyValid)
+                MessageBox.Show("Api key is not, please edit it in config file");
         }
 
         private void btnApplicationSettings_Click(object sender, EventArgs e)

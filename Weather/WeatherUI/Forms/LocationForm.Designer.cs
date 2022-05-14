@@ -64,22 +64,25 @@ namespace WeatherUI.Forms
             // 
             this.dataGridLocations.AllowUserToAddRows = false;
             this.dataGridLocations.AllowUserToDeleteRows = false;
+            this.dataGridLocations.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridLocations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridLocations.Location = new System.Drawing.Point(12, 54);
+            this.dataGridLocations.MultiSelect = false;
             this.dataGridLocations.Name = "dataGridLocations";
             this.dataGridLocations.ReadOnly = true;
             this.dataGridLocations.RowHeadersVisible = false;
             this.dataGridLocations.RowTemplate.Height = 25;
-            this.dataGridLocations.Size = new System.Drawing.Size(460, 295);
+            this.dataGridLocations.Size = new System.Drawing.Size(520, 295);
             this.dataGridLocations.TabIndex = 2;
             this.dataGridLocations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridLocations_CellDoubleClick);
             // 
             // checkSaveSelectedLocation
             // 
             this.checkSaveSelectedLocation.AutoSize = true;
-            this.checkSaveSelectedLocation.Location = new System.Drawing.Point(324, 28);
+            this.checkSaveSelectedLocation.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.checkSaveSelectedLocation.Location = new System.Drawing.Point(324, 18);
             this.checkSaveSelectedLocation.Name = "checkSaveSelectedLocation";
-            this.checkSaveSelectedLocation.Size = new System.Drawing.Size(142, 19);
+            this.checkSaveSelectedLocation.Size = new System.Drawing.Size(217, 29);
             this.checkSaveSelectedLocation.TabIndex = 3;
             this.checkSaveSelectedLocation.Text = "Save selected location";
             this.checkSaveSelectedLocation.UseVisualStyleBackColor = true;
@@ -87,9 +90,9 @@ namespace WeatherUI.Forms
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnClose.Location = new System.Drawing.Point(372, 352);
+            this.btnClose.Location = new System.Drawing.Point(432, 355);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 35);
+            this.btnClose.Size = new System.Drawing.Size(100, 40);
             this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Close";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -99,9 +102,9 @@ namespace WeatherUI.Forms
             // btnApplicationSettings
             // 
             this.btnApplicationSettings.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnApplicationSettings.Location = new System.Drawing.Point(116, 352);
+            this.btnApplicationSettings.Location = new System.Drawing.Point(12, 355);
             this.btnApplicationSettings.Name = "btnApplicationSettings";
-            this.btnApplicationSettings.Size = new System.Drawing.Size(250, 35);
+            this.btnApplicationSettings.Size = new System.Drawing.Size(250, 40);
             this.btnApplicationSettings.TabIndex = 5;
             this.btnApplicationSettings.Text = "Application settings";
             this.btnApplicationSettings.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -112,15 +115,20 @@ namespace WeatherUI.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 399);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(544, 401);
             this.Controls.Add(this.btnApplicationSettings);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.checkSaveSelectedLocation);
             this.Controls.Add(this.dataGridLocations);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtLocation);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LocationForm";
-            this.Text = "LocationForm";
+            this.Text = "Select location";
+            this.Load += new System.EventHandler(this.LocationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridLocations)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
