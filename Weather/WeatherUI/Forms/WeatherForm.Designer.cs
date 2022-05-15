@@ -29,6 +29,7 @@ namespace WeatherUI.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblLocationDetails = new System.Windows.Forms.Label();
             this.btnApplicationSettings = new System.Windows.Forms.Button();
             this.btnAddNewLocation = new System.Windows.Forms.Button();
@@ -44,7 +45,7 @@ namespace WeatherUI.Forms
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnPreviousDay = new System.Windows.Forms.Button();
             this.btnNextDay = new System.Windows.Forms.Button();
-            this.btnSavedLocations = new System.Windows.Forms.Button();
+            this.btnNextPreviousToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lblLocationDetails
@@ -205,23 +206,11 @@ namespace WeatherUI.Forms
             this.btnNextDay.UseVisualStyleBackColor = true;
             this.btnNextDay.Click += new System.EventHandler(this.btnNextDay_Click);
             // 
-            // btnSavedLocations
-            // 
-            this.btnSavedLocations.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSavedLocations.Location = new System.Drawing.Point(809, 101);
-            this.btnSavedLocations.Name = "btnSavedLocations";
-            this.btnSavedLocations.Size = new System.Drawing.Size(213, 40);
-            this.btnSavedLocations.TabIndex = 17;
-            this.btnSavedLocations.Text = "Saved locations";
-            this.btnSavedLocations.UseVisualStyleBackColor = true;
-            this.btnSavedLocations.Click += new System.EventHandler(this.btnSavedLocationsManager_Click);
-            // 
             // WeatherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1034, 561);
-            this.Controls.Add(this.btnSavedLocations);
             this.Controls.Add(this.btnPreviousDay);
             this.Controls.Add(this.btnNextDay);
             this.Controls.Add(this.lblInfo);
@@ -263,6 +252,6 @@ namespace WeatherUI.Forms
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Button btnPreviousDay;
         private System.Windows.Forms.Button btnNextDay;
-        private System.Windows.Forms.Button btnSavedLocations;
+        private System.Windows.Forms.ToolTip btnNextPreviousToolTip;
     }
 }

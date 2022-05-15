@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using WeatherLibrary.Factories;
@@ -9,8 +8,8 @@ using WeatherLibrary.Objects;
 using WeatherUI.Controls;
 using WeatherLibrary.Enums;
 using WeatherLibrary.Objects.WeatherInfo;
-using WeatherLibrary.Helpers;
 using System.Globalization;
+using System.Linq;
 
 namespace WeatherUI.Forms                                                                                                         
 {
@@ -33,14 +32,23 @@ namespace WeatherUI.Forms
                 WeatherForecast = await weatherFactory.GetWeatherForecast(locations[actualLocationIndex]);
             }).GetAwaiter().GetResult();
             InitializeComponent();
-            showWeatherForecast();
-            addHourInfo();
+            ShowWeatherForecast();
+            AddHourInfo();
+            SetToolTips();
             actualDay = WeatherForecast.Info.Times[0].Value.Day;
-            updateInfoLabel();
+            UpdateInfoLabel();
             btnPreviousDay.Enabled = false;
             btnPrevious.Enabled = false;
-            if (locations.Count == 0)
+            if (locations.Count == 1)
                 btnNext.Enabled = false;
+        }
+
+        private void SetToolTips()
+        {
+            if (actualLocationIndex != 0)
+                btnNextPreviousToolTip.SetToolTip(btnPrevious, Locations[actualLocationIndex -1].Name);
+            if (actualLocationIndex != Locations.Count - 1)
+                btnNextPreviousToolTip.SetToolTip(btnNext, Locations[actualLocationIndex +1].Name);
         }
 
         private void WeatherForm_Load(object sender, EventArgs e)
@@ -63,6 +71,8 @@ namespace WeatherUI.Forms
             if(result == DialogResult.OK)
             {
                 Locations.Add(form.SelectedLocation);
+                if (Locations.Count > 1)
+                    btnNext.Enabled = true; 
             }
         }
 
@@ -75,45 +85,47 @@ namespace WeatherUI.Forms
             if (actualLocationIndex != -1)
             {
                 Task.Run(async () => WeatherForecast = await weatherFactory.GetWeatherForecast(Locations[actualLocationIndex])).GetAwaiter().GetResult();
-                showWeatherForecast();
-                changeHourInfo(DateTime.Now);
+                ShowWeatherForecast();
+                ChangeHourInfo(DateTime.Now);
             }
 
-            updateInfoLabel();
+            UpdateInfoLabel();
+            SetToolTips();
 
             if (actualLocationIndex < Locations.Count)
                 btnNext.Enabled = true;
         }
 
-        private void updateInfoLabel()
+        private void UpdateInfoLabel()
         {
             DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay);
             CultureInfo info = new CultureInfo("en");
-            string day = info.DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
+            string day = info.DateTimeFormat.GetDayName(date.DayOfWeek);
             lblInfo.Text = $"{EnumFactory.GetDescription(DataEnum)} for location {Locations[actualLocationIndex].Name} | Date: {date.ToString("dd.MM.yyyy")} - {day}";
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             actualLocationIndex++;
-            updateInfoLabel();
+            UpdateInfoLabel();
 
             if (actualLocationIndex >= Locations.Count - 1)
                 btnNext.Enabled = false;
 
             if (actualLocationIndex >= 0 && actualLocationIndex < Locations.Count)
             {
-                showWeatherForecast();
+                ShowWeatherForecast();
                 Task.Run(async () => WeatherForecast = await weatherFactory.GetWeatherForecast(Locations[actualLocationIndex])).GetAwaiter().GetResult();
             }
 
-            updateInfoLabel();
+            UpdateInfoLabel();
+            SetToolTips();
 
             if (actualLocationIndex != 0)
                 btnPrevious.Enabled = true;
         }
 
-        private void showWeatherForecast()
+        private void ShowWeatherForecast()
         {
             lblLocationDetails.Text = $"Location details - {Locations[actualLocationIndex].Name}";
             lblLatitude.Text = "Latitude: " + Locations[actualLocationIndex].Latitude.ToString();
@@ -124,7 +136,7 @@ namespace WeatherUI.Forms
             lblElevation.Text = "Elevation: " + WeatherForecast.Elevation.ToString() + "m";
         }
 
-        private void changeHourInfo(DateTime dateTime)
+        private void ChangeHourInfo(DateTime dateTime)
         {
             string value = string.Empty;
             string time = string.Empty;
@@ -132,35 +144,7 @@ namespace WeatherUI.Forms
 
             foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(WeatherForecast, dateTime).HourInfos)
             {
-                switch (DataEnum)
-                {
-                    case Data.Temperature:
-                        value = ConversionFactory.ConvertNullableDouble(hour.Temperature) + " °C";
-                        break;
-                    case Data.ApperentTemperature:
-                        value = ConversionFactory.ConvertNullableDouble(hour.ApperentTemperature) + " °C";
-                        break;
-                    case Data.CloudCover:
-                        value = $"{hour.CloudCover} %";
-                        break;
-                    case Data.WindSpeed:
-                        value = ConversionFactory.ConvertNullableDouble(hour.WindSpeed) + "Km/s";
-                        break;
-                    case Data.SnowHeight:
-                        value = ConversionFactory.ConvertNullableDouble(hour.SnowHeight) + "m";
-                        break;
-                    case Data.Dewpoint:
-                        value = ConversionFactory.ConvertNullableDouble(hour.DewPoint) + " °C";
-                        break;
-                    case Data.RelatievHumidity:
-                        value = $"{hour.Humidity} %";
-                        break;
-                    case Data.Precipitation:
-                        value = $"{hour.RainPrecipitation} mm";
-                        break;
-;                    default:
-                        break;
-                }
+                value = hour.GetType().GetProperty(DataEnum.ToString()).GetValue(hour).ToString() + EnumFactory.GetUnit(DataEnum);
 
                 time = hour.Time.ToString("HH:mm");
                 Infos[index].Time = time;
@@ -170,7 +154,7 @@ namespace WeatherUI.Forms
             }
         }
 
-        private void addHourInfo()
+        private void AddHourInfo()
         {
             int y = 179;
             int x = 142;
@@ -207,16 +191,16 @@ namespace WeatherUI.Forms
             if (result == DialogResult.OK)
             {
                 DataEnum = form.DataEnum;
-                changeHourInfo(DateTime.Now);
-                updateInfoLabel();
+                ChangeHourInfo(DateTime.Now);
+                UpdateInfoLabel();
             }
         }
 
         private void btnNextDay_Click(object sender, EventArgs e)
         {
             actualDay++;
-            changeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
-            updateInfoLabel();
+            ChangeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
+            UpdateInfoLabel();
             btnPreviousDay.Enabled = true;
 
             if (actualDay - DateTime.Now.Day > 5)
@@ -226,34 +210,12 @@ namespace WeatherUI.Forms
         private void bntPreviousDay_Click(object sender, EventArgs e)
         {
             actualDay--;
-            changeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
-            updateInfoLabel();
+            ChangeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
+            UpdateInfoLabel();
             btnNextDay.Enabled = true;
 
             if (actualDay - DateTime.Now.Day == 0)
                 btnPreviousDay.Enabled = false;
-        }
-
-        private void btnSavedLocationsManager_Click(object sender, EventArgs e)
-        {
-            SavedLocationsForm form = new SavedLocationsForm();
-            form.ShowDialog();
-
-            Locations = ConfigHelper.Instance.GetLocations();
-
-            if (Locations.Count == 0)
-                closeThisAndOpenLocation();
-        }
-
-        private void closeThisAndOpenLocation()
-        {
-            this.Invoke((MethodInvoker)delegate ()
-            {
-                this.Hide();
-                LocationForm form = new LocationForm(true);
-                form.Closed += (s, args) => this.Close();
-                form.Show();
-            });
         }
     }
 }

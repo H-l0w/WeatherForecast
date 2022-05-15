@@ -79,6 +79,8 @@ namespace WeatherUI.Forms
             // checkSaveSelectedLocation
             // 
             this.checkSaveSelectedLocation.AutoSize = true;
+            this.checkSaveSelectedLocation.Checked = true;
+            this.checkSaveSelectedLocation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkSaveSelectedLocation.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.checkSaveSelectedLocation.Location = new System.Drawing.Point(324, 18);
             this.checkSaveSelectedLocation.Name = "checkSaveSelectedLocation";
@@ -113,6 +115,7 @@ namespace WeatherUI.Forms
             // 
             // LocationForm
             // 
+            this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;

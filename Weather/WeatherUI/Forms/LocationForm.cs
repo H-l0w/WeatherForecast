@@ -43,15 +43,6 @@ namespace WeatherUI.Forms
             dataGridLocations.Columns[1].Name = "Continent";
             dataGridLocations.Columns[2].Name = "State";
             dataGridLocations.Columns[3].Name = "Region";
-            setColumnsWidth();
-        }
-
-        private void setColumnsWidth()
-        {
-            foreach (DataGridViewColumn column in dataGridLocations.Columns)
-            {
-                column.Width = 115;
-            }
         }
 
         private async Task fillDataGrid()
@@ -171,8 +162,11 @@ namespace WeatherUI.Forms
         {
             DataGridViewRow row = dataGridLocations.Rows[rowIndex];
 
-            Location location = Locations.FirstOrDefault(l => l.Name == row.Cells[0].Value.ToString() && l.Continent == row.Cells[1].Value.ToString() && l.Country == row.Cells[2].Value.ToString() && l.Region == row.Cells[3].Value.ToString());
-            Debug.WriteLine(location.Latitude);
+            Location location = Locations.FirstOrDefault(l =>
+            l.Name == (string)row.Cells[0]?.Value
+            && l.Continent == (string)row.Cells[1]?.Value
+            && l.Country == (string)row.Cells[2]?.Value
+            && l.Region == (string)row.Cells[3]?.Value);
             return location;
         }
 

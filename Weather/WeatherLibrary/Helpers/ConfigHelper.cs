@@ -195,7 +195,7 @@ namespace WeatherLibrary.Helpers
 
         public void SaveLocation(Location location, bool append)
         {
-            string locationSerialize = $"{location.Latitude};{location.Longitude};{location.Name};{location.Continent};{location.Country};{location.Region};" + Environment.NewLine;
+            string locationSerialize = $"{location.Latitude};{location.Longitude};{location.Name ?? string.Empty};{location.Continent ?? string.Empty};{location.Country ?? string.Empty};{location.Region ?? string.Empty};";
             SaveConfig(dirName + locatationsFile, locationSerialize, append);
         }
 

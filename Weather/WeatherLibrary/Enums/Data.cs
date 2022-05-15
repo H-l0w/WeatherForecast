@@ -4,28 +4,28 @@ namespace WeatherLibrary.Enums
 {
     public enum Data
     {
-        [Description("Temperature")]
+        [WeatherDetail("Temperature", "°C")]
         Temperature = 0,
 
-        [Description("Apperent temperature")]
+        [WeatherDetail("Apperent temperature", "°C")]
         ApperentTemperature = 1,
 
-        [Description("Precipitation")]
+        [WeatherDetail("Precipitation", "mm")]
         Precipitation = 2,
 
-        [Description("Cloud cover")]
+        [WeatherDetail("Cloud cover", "%")]
         CloudCover = 3,
 
-        [Description("Wind speed")]
+        [WeatherDetail("Wind speed", "Km/s")]
         WindSpeed = 4,
 
-        [Description("Snow height")]
+        [WeatherDetail("Snow height", "m")]
         SnowHeight = 5,
 
-        [Description("Dewpoint")]
+        [WeatherDetail("Dewpoint", "°C")]
         Dewpoint = 6,
 
-        [Description("Relative humidity")]
+        [WeatherDetail("Relative humidity", "%")]
         RelatievHumidity = 7
     }
 }
