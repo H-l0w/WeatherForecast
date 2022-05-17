@@ -11,7 +11,7 @@ namespace WeatherLibrary.Enums
         ApperentTemperature = 1,
 
         [WeatherDetail("Precipitation", "mm")]
-        Precipitation = 2,
+        RainPrecipitation = 2,
 
         [WeatherDetail("Cloud cover", "%")]
         CloudCover = 3,
@@ -23,9 +23,9 @@ namespace WeatherLibrary.Enums
         SnowHeight = 5,
 
         [WeatherDetail("Dewpoint", "°C")]
-        Dewpoint = 6,
+        DewPoint = 6,
 
         [WeatherDetail("Relative humidity", "%")]
-        RelatievHumidity = 7
+        Humidity = 7
     }
 }

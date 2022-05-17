@@ -9,7 +9,6 @@ using WeatherUI.Controls;
 using WeatherLibrary.Enums;
 using WeatherLibrary.Objects.WeatherInfo;
 using System.Globalization;
-using System.Linq;
 
 namespace WeatherUI.Forms                                                                                                         
 {
@@ -23,22 +22,35 @@ namespace WeatherUI.Forms
         private Data DataEnum = Data.Temperature;
         private int actualDay;
         private bool isApiKeyValid;
+
+        private Point bottomRight;
+        private Point bottomLeft;
+        private Point topRight;
+
+        private Point topRightForecast;
+        private Point topLeftForecast;
+        private Point bottomLeftForecast;
+        private Point bottomRightForecast;
+
+        Size WeatherForecastFieldSize;
+        Size OneWeatherForecastFieldSize;
+
+
+        private const int EdgePadding = 20;
+        private const int ButtonPadding = 10;
+
         public WeatherForm(List<Location> locations, bool isApiKeyValid = true)
         {
             this.Locations = locations;
+            this.WindowState = FormWindowState.Maximized;
+            this.MinimumSize = new Size(1280, 720);
             this.isApiKeyValid = isApiKeyValid;
             Task.Run(async () =>
             {
                 WeatherForecast = await weatherFactory.GetWeatherForecast(locations[actualLocationIndex]);
             }).GetAwaiter().GetResult();
+
             InitializeComponent();
-            ShowWeatherForecast();
-            AddHourInfo();
-            SetToolTips();
-            actualDay = WeatherForecast.Info.Times[0].Value.Day;
-            UpdateInfoLabel();
-            btnPreviousDay.Enabled = false;
-            btnPrevious.Enabled = false;
             if (locations.Count == 1)
                 btnNext.Enabled = false;
         }
@@ -55,6 +67,16 @@ namespace WeatherUI.Forms
         {
             if (!isApiKeyValid)
                 MessageBox.Show("Api key is not, please edit it in config file");
+
+            ShowWeatherForecast();
+            RecalculatePoints();
+            AddHourInfo();
+            SetToolTips();
+            actualDay = WeatherForecast.Info.Times[0].Value.Day;
+            UpdateInfoLabel();
+            btnPreviousDay.Enabled = false;
+            btnPrevious.Enabled = false;
+            lblInfo.Location = new Point(topLeftForecast.X, EdgePadding);
         }
 
         private void btnApplicationSettings_Click(object sender, EventArgs e)
@@ -156,16 +178,16 @@ namespace WeatherUI.Forms
 
         private void AddHourInfo()
         {
-            int y = 179;
-            int x = 142;
             int count = 0;
+            int x = topLeftForecast.X;
+            int y = topLeftForecast.Y;
             foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(WeatherForecast, DateTime.Now).HourInfos)
             {
                 if (count > 4)
                 {
-                    x = 142;
+                    x = topLeftForecast.X;
                     count = 0;
-                    y += 76;
+                    y += OneWeatherForecastFieldSize.Height;
                 }
 
                 HourInfo hourInfo = new HourInfo
@@ -173,14 +195,18 @@ namespace WeatherUI.Forms
                     Code = hour.Code,
                     Time = hour.Time.ToString("HH:mm"),
                     Value = ConversionFactory.ConvertNullableDouble(hour.Temperature) + " °C",
-                    Location = new Point(x, y)
+                    Location = new Point(x, y),
+                    Width = OneWeatherForecastFieldSize.Width,
+                    Height = OneWeatherForecastFieldSize.Height,
                 };
                 Infos.Add(hourInfo);
 
-                x += 150;
+                x += OneWeatherForecastFieldSize.Width;
                 Controls.Add(hourInfo);
                 count++;
             }
+            btnChangeData.Location = new Point(x, y);
+            btnChangeData.Size = new Size(OneWeatherForecastFieldSize.Width, OneWeatherForecastFieldSize.Height);
         }
 
         private void btnChangeData_Click(object sender, EventArgs e)
@@ -216,6 +242,76 @@ namespace WeatherUI.Forms
 
             if (actualDay - DateTime.Now.Day == 0)
                 btnPreviousDay.Enabled = false;
+        }
+
+        private void RepositionControls()
+        {
+            RecalculatePoints();
+            RepositionButtons();
+            RepositionWeatherControls();
+        }
+
+        private void RecalculatePoints()
+        {
+            bottomRight = new Point(ClientRectangle.Width, ClientRectangle.Height);
+            bottomLeft = new Point(0, ClientRectangle.Height);
+            topRight = new Point(ClientRectangle.Width - btnAddNewLocation.Width - EdgePadding, EdgePadding);
+
+            topRightForecast = new Point(topRight.X - btnAddNewLocation.Width, EdgePadding + btnApplicationSettings.Height);
+            topLeftForecast = new Point(EdgePadding + btnPrevious.Width + EdgePadding, EdgePadding + btnApplicationSettings.Height);
+            bottomLeftForecast = new Point(EdgePadding + btnPrevious.Width, bottomLeft.Y - EdgePadding);
+            bottomRightForecast = new Point(btnPrevious.Width, bottomLeft.Y - EdgePadding);
+
+            WeatherForecastFieldSize = new Size(topRightForecast.X - topLeftForecast.Y, bottomRightForecast.Y - topRightForecast.Y);
+            OneWeatherForecastFieldSize = new Size(WeatherForecastFieldSize.Width / 5, WeatherForecastFieldSize.Height / 5);
+        }
+
+        private void RepositionWeatherControls()
+        {
+            int count = 0;
+            int x = topLeftForecast.X;
+            int y = topLeftForecast.Y;
+            foreach (HourInfo info in Infos){
+
+                if (count > 4)
+                {
+                    count = 0;
+                    y += OneWeatherForecastFieldSize.Height;
+                    x = topLeftForecast.X;
+                }
+                info.Location = new Point(x, y);
+                info.Width = OneWeatherForecastFieldSize.Width;
+                info.Height = OneWeatherForecastFieldSize.Height;
+                x += OneWeatherForecastFieldSize.Width;
+                info.SetControls();
+                count++;
+            }
+            btnChangeData.Location = new Point(x, y);
+            btnChangeData.Size = new Size(OneWeatherForecastFieldSize.Width, OneWeatherForecastFieldSize.Height);
+        }
+
+        private void RepositionButtons()
+        {
+            btnAddNewLocation.Location = new Point(bottomRight.X - btnAddNewLocation.Width - EdgePadding, EdgePadding);
+
+            btnApplicationSettings.Location = new Point(bottomRight.X - btnApplicationSettings.Width - EdgePadding,
+                                                        EdgePadding + btnAddNewLocation.Height + ButtonPadding);
+
+            btnPrevious.Location = new Point(EdgePadding, bottomLeft.Y - EdgePadding - btnPrevious.Height);
+
+            btnPreviousDay.Location = new Point(EdgePadding,
+                                                bottomLeft.Y - EdgePadding - btnPrevious.Height - btnPrevious.Height - ButtonPadding);
+
+            btnNext.Location = new Point(bottomRight.X - btnNext.Width - EdgePadding,
+                                         bottomRight.Y - btnNext.Height - EdgePadding);
+
+            btnNextDay.Location = new Point(bottomRight.X - btnNextDay.Width - EdgePadding,
+                                         bottomRight.Y - btnNextDay.Height - ButtonPadding - btnNext.Height - EdgePadding);
+        }
+
+        private void WeatherForm_Resize(object sender, EventArgs e)
+        {
+            RepositionControls();
         }
     }
 }

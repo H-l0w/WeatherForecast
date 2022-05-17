@@ -60,21 +60,21 @@ namespace WeatherUI.Forms
             // 
             // btnApplicationSettings
             // 
-            this.btnApplicationSettings.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnApplicationSettings.Location = new System.Drawing.Point(809, 55);
+            this.btnApplicationSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnApplicationSettings.Location = new System.Drawing.Point(826, 55);
             this.btnApplicationSettings.Name = "btnApplicationSettings";
-            this.btnApplicationSettings.Size = new System.Drawing.Size(213, 40);
+            this.btnApplicationSettings.Size = new System.Drawing.Size(200, 40);
             this.btnApplicationSettings.TabIndex = 1;
-            this.btnApplicationSettings.Text = "Application settings";
+            this.btnApplicationSettings.Text = "Settings";
             this.btnApplicationSettings.UseVisualStyleBackColor = true;
             this.btnApplicationSettings.Click += new System.EventHandler(this.btnApplicationSettings_Click);
             // 
             // btnAddNewLocation
             // 
-            this.btnAddNewLocation.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAddNewLocation.Location = new System.Drawing.Point(809, 9);
+            this.btnAddNewLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAddNewLocation.Location = new System.Drawing.Point(826, 9);
             this.btnAddNewLocation.Name = "btnAddNewLocation";
-            this.btnAddNewLocation.Size = new System.Drawing.Size(213, 40);
+            this.btnAddNewLocation.Size = new System.Drawing.Size(200, 40);
             this.btnAddNewLocation.TabIndex = 2;
             this.btnAddNewLocation.Text = "Add new location";
             this.btnAddNewLocation.UseVisualStyleBackColor = true;
@@ -82,23 +82,23 @@ namespace WeatherUI.Forms
             // 
             // btnNext
             // 
-            this.btnNext.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnNext.Location = new System.Drawing.Point(906, 484);
+            this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnNext.Location = new System.Drawing.Point(826, 484);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(116, 72);
+            this.btnNext.Size = new System.Drawing.Size(200, 70);
             this.btnNext.TabIndex = 3;
-            this.btnNext.Text = "Next\r\nlocation";
+            this.btnNext.Text = "Next location";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnPrevious
             // 
-            this.btnPrevious.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnPrevious.Location = new System.Drawing.Point(12, 484);
             this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(116, 72);
+            this.btnPrevious.Size = new System.Drawing.Size(200, 70);
             this.btnPrevious.TabIndex = 4;
-            this.btnPrevious.Text = "Previous\r\nlocation";
+            this.btnPrevious.Text = "Previous location";
             this.btnPrevious.UseVisualStyleBackColor = true;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
@@ -165,12 +165,12 @@ namespace WeatherUI.Forms
             // btnChangeData
             // 
             this.btnChangeData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangeData.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnChangeData.Location = new System.Drawing.Point(742, 484);
+            this.btnChangeData.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnChangeData.Location = new System.Drawing.Point(620, 484);
             this.btnChangeData.Name = "btnChangeData";
-            this.btnChangeData.Size = new System.Drawing.Size(150, 72);
+            this.btnChangeData.Size = new System.Drawing.Size(200, 70);
             this.btnChangeData.TabIndex = 12;
-            this.btnChangeData.Text = "Change\r\nData";
+            this.btnChangeData.Text = "Change data";
             this.btnChangeData.UseVisualStyleBackColor = true;
             this.btnChangeData.Click += new System.EventHandler(this.btnChangeData_Click);
             // 
@@ -178,7 +178,7 @@ namespace WeatherUI.Forms
             // 
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblInfo.Location = new System.Drawing.Point(155, 145);
+            this.lblInfo.Location = new System.Drawing.Point(275, 13);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(423, 30);
             this.lblInfo.TabIndex = 14;
@@ -186,23 +186,23 @@ namespace WeatherUI.Forms
             // 
             // btnPreviousDay
             // 
-            this.btnPreviousDay.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnPreviousDay.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnPreviousDay.Location = new System.Drawing.Point(12, 406);
             this.btnPreviousDay.Name = "btnPreviousDay";
-            this.btnPreviousDay.Size = new System.Drawing.Size(116, 72);
+            this.btnPreviousDay.Size = new System.Drawing.Size(200, 70);
             this.btnPreviousDay.TabIndex = 16;
-            this.btnPreviousDay.Text = "Previous\r\nday";
+            this.btnPreviousDay.Text = "Previous day";
             this.btnPreviousDay.UseVisualStyleBackColor = true;
             this.btnPreviousDay.Click += new System.EventHandler(this.bntPreviousDay_Click);
             // 
             // btnNextDay
             // 
-            this.btnNextDay.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnNextDay.Location = new System.Drawing.Point(906, 406);
+            this.btnNextDay.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnNextDay.Location = new System.Drawing.Point(826, 406);
             this.btnNextDay.Name = "btnNextDay";
-            this.btnNextDay.Size = new System.Drawing.Size(116, 72);
+            this.btnNextDay.Size = new System.Drawing.Size(200, 70);
             this.btnNextDay.TabIndex = 15;
-            this.btnNextDay.Text = "Next\r\nday";
+            this.btnNextDay.Text = "Next day";
             this.btnNextDay.UseVisualStyleBackColor = true;
             this.btnNextDay.Click += new System.EventHandler(this.btnNextDay_Click);
             // 
@@ -229,6 +229,7 @@ namespace WeatherUI.Forms
             this.Name = "WeatherForm";
             this.Text = "WeatherForm";
             this.Load += new System.EventHandler(this.WeatherForm_Load);
+            this.Resize += new System.EventHandler(this.WeatherForm_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -246,7 +247,6 @@ namespace WeatherUI.Forms
         private System.Windows.Forms.Label lblCountry;
         private System.Windows.Forms.Label lblRegion;
         private System.Windows.Forms.Label lblContinent;
-        private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.Label lblElevation;
         private System.Windows.Forms.Button btnChangeData;
         private System.Windows.Forms.Label lblInfo;
