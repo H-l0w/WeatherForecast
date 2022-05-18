@@ -35,17 +35,14 @@ namespace WeatherUI.Forms
             this.btnAddNewLocation = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnPrevious = new System.Windows.Forms.Button();
-            this.lblLatitude = new System.Windows.Forms.Label();
-            this.LblLongitude = new System.Windows.Forms.Label();
-            this.lblCountry = new System.Windows.Forms.Label();
-            this.lblRegion = new System.Windows.Forms.Label();
-            this.lblContinent = new System.Windows.Forms.Label();
-            this.lblElevation = new System.Windows.Forms.Label();
+            this.lblLocationInfo = new System.Windows.Forms.Label();
             this.btnChangeData = new System.Windows.Forms.Button();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnPreviousDay = new System.Windows.Forms.Button();
             this.btnNextDay = new System.Windows.Forms.Button();
             this.btnNextPreviousToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.listLocation = new System.Windows.Forms.ListBox();
+            this.lblLocations = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblLocationDetails
@@ -102,65 +99,15 @@ namespace WeatherUI.Forms
             this.btnPrevious.UseVisualStyleBackColor = true;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
-            // lblLatitude
+            // lblLocationInfo
             // 
-            this.lblLatitude.AutoSize = true;
-            this.lblLatitude.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblLatitude.Location = new System.Drawing.Point(12, 39);
-            this.lblLatitude.Name = "lblLatitude";
-            this.lblLatitude.Size = new System.Drawing.Size(102, 21);
-            this.lblLatitude.TabIndex = 5;
-            this.lblLatitude.Text = "Lorem ipsum";
-            // 
-            // LblLongitude
-            // 
-            this.LblLongitude.AutoSize = true;
-            this.LblLongitude.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblLongitude.Location = new System.Drawing.Point(12, 60);
-            this.LblLongitude.Name = "LblLongitude";
-            this.LblLongitude.Size = new System.Drawing.Size(102, 21);
-            this.LblLongitude.TabIndex = 6;
-            this.LblLongitude.Text = "Lorem ipsum";
-            // 
-            // lblCountry
-            // 
-            this.lblCountry.AutoSize = true;
-            this.lblCountry.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblCountry.Location = new System.Drawing.Point(12, 102);
-            this.lblCountry.Name = "lblCountry";
-            this.lblCountry.Size = new System.Drawing.Size(102, 21);
-            this.lblCountry.TabIndex = 8;
-            this.lblCountry.Text = "Lorem ipsum";
-            // 
-            // lblRegion
-            // 
-            this.lblRegion.AutoSize = true;
-            this.lblRegion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblRegion.Location = new System.Drawing.Point(12, 81);
-            this.lblRegion.Name = "lblRegion";
-            this.lblRegion.Size = new System.Drawing.Size(102, 21);
-            this.lblRegion.TabIndex = 9;
-            this.lblRegion.Text = "Lorem ipsum";
-            // 
-            // lblContinent
-            // 
-            this.lblContinent.AutoSize = true;
-            this.lblContinent.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblContinent.Location = new System.Drawing.Point(12, 123);
-            this.lblContinent.Name = "lblContinent";
-            this.lblContinent.Size = new System.Drawing.Size(102, 21);
-            this.lblContinent.TabIndex = 10;
-            this.lblContinent.Text = "Lorem ipsum";
-            // 
-            // lblElevation
-            // 
-            this.lblElevation.AutoSize = true;
-            this.lblElevation.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblElevation.Location = new System.Drawing.Point(12, 144);
-            this.lblElevation.Name = "lblElevation";
-            this.lblElevation.Size = new System.Drawing.Size(102, 21);
-            this.lblElevation.TabIndex = 11;
-            this.lblElevation.Text = "Lorem ipsum";
+            this.lblLocationInfo.AutoSize = true;
+            this.lblLocationInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLocationInfo.Location = new System.Drawing.Point(12, 66);
+            this.lblLocationInfo.Name = "lblLocationInfo";
+            this.lblLocationInfo.Size = new System.Drawing.Size(102, 21);
+            this.lblLocationInfo.TabIndex = 5;
+            this.lblLocationInfo.Text = "Lorem ipsum";
             // 
             // btnChangeData
             // 
@@ -206,21 +153,39 @@ namespace WeatherUI.Forms
             this.btnNextDay.UseVisualStyleBackColor = true;
             this.btnNextDay.Click += new System.EventHandler(this.btnNextDay_Click);
             // 
+            // listLocation
+            // 
+            this.listLocation.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.listLocation.FormattingEnabled = true;
+            this.listLocation.ItemHeight = 25;
+            this.listLocation.Location = new System.Drawing.Point(826, 132);
+            this.listLocation.Name = "listLocation";
+            this.listLocation.Size = new System.Drawing.Size(200, 254);
+            this.listLocation.TabIndex = 17;
+            this.listLocation.SelectedIndexChanged += new System.EventHandler(this.listLocation_SelectedIndexChanged);
+            // 
+            // lblLocations
+            // 
+            this.lblLocations.AutoSize = true;
+            this.lblLocations.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLocations.Location = new System.Drawing.Point(826, 102);
+            this.lblLocations.Name = "lblLocations";
+            this.lblLocations.Size = new System.Drawing.Size(101, 30);
+            this.lblLocations.TabIndex = 18;
+            this.lblLocations.Text = "Locations";
+            // 
             // WeatherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1034, 561);
+            this.Controls.Add(this.lblLocations);
+            this.Controls.Add(this.listLocation);
             this.Controls.Add(this.btnPreviousDay);
             this.Controls.Add(this.btnNextDay);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnChangeData);
-            this.Controls.Add(this.lblElevation);
-            this.Controls.Add(this.lblContinent);
-            this.Controls.Add(this.lblRegion);
-            this.Controls.Add(this.lblCountry);
-            this.Controls.Add(this.LblLongitude);
-            this.Controls.Add(this.lblLatitude);
+            this.Controls.Add(this.lblLocationInfo);
             this.Controls.Add(this.btnPrevious);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnAddNewLocation);
@@ -242,16 +207,13 @@ namespace WeatherUI.Forms
         private System.Windows.Forms.Button btnAddNewLocation;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
-        private System.Windows.Forms.Label lblLatitude;
-        private System.Windows.Forms.Label LblLongitude;
-        private System.Windows.Forms.Label lblCountry;
-        private System.Windows.Forms.Label lblRegion;
-        private System.Windows.Forms.Label lblContinent;
-        private System.Windows.Forms.Label lblElevation;
+        private System.Windows.Forms.Label lblLocationInfo;
         private System.Windows.Forms.Button btnChangeData;
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Button btnPreviousDay;
         private System.Windows.Forms.Button btnNextDay;
         private System.Windows.Forms.ToolTip btnNextPreviousToolTip;
+        private System.Windows.Forms.ListBox listLocation;
+        private System.Windows.Forms.Label lblLocations;
     }
 }

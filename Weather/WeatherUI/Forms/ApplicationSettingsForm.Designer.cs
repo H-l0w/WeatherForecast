@@ -31,6 +31,7 @@
             this.bntChangeTheme = new System.Windows.Forms.Button();
             this.btnEditApiKey = new System.Windows.Forms.Button();
             this.btnEditSavedLocation = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bntChangeTheme
@@ -66,11 +67,24 @@
             this.btnEditSavedLocation.UseVisualStyleBackColor = true;
             this.btnEditSavedLocation.Click += new System.EventHandler(this.btnEditSavedLocation_Click);
             // 
+            // btnClose
+            // 
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnClose.Location = new System.Drawing.Point(12, 220);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(260, 40);
+            this.btnClose.TabIndex = 3;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // ApplicationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 201);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(284, 271);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnEditSavedLocation);
             this.Controls.Add(this.btnEditApiKey);
             this.Controls.Add(this.bntChangeTheme);
@@ -80,7 +94,6 @@
             this.MinimizeBox = false;
             this.Name = "ApplicationSettingsForm";
             this.Text = "ApplicationSettingsForm";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ApplicationSettingsForm_KeyDown);
             this.ResumeLayout(false);
 
         }
@@ -90,5 +103,6 @@
         private System.Windows.Forms.Button bntChangeTheme;
         private System.Windows.Forms.Button btnEditApiKey;
         private System.Windows.Forms.Button btnEditSavedLocation;
+        private System.Windows.Forms.Button btnClose;
     }
 }

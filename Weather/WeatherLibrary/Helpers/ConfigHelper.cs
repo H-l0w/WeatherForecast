@@ -56,7 +56,9 @@ namespace WeatherLibrary.Helpers
             List<Location> locations = new List<Location>();
 
             foreach (string line in ReadConfig(dirName + locatationsFile)) {
-                locations.Add(GetLocationFromString(line));
+                Location temp = GetLocationFromString(line);
+                if (temp != null)
+                    locations.Add(temp);
             }
 
             return locations;
@@ -106,6 +108,8 @@ namespace WeatherLibrary.Helpers
 
         private Location GetLocationFromString(string locationString)
         {
+            if (string.IsNullOrEmpty(locationString))
+                return null;
             StringBuilder sb = new StringBuilder();
             int semicolonCount = 0;
             Location location = new Location();

@@ -44,6 +44,7 @@ namespace WeatherUI.Forms
 
             ConfigHelper.Instance.RemoveLocation(index);
             dataGridLocations.Rows.RemoveAt(index);
+            SessionHelper.Instance.Locations.RemoveAt(index);
             if (dataGridLocations.Rows.Count == 0)
                 btnRemove.Enabled = false;
         }

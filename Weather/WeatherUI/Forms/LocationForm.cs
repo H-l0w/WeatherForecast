@@ -137,7 +137,7 @@ namespace WeatherUI.Forms
                 {
                     ConfigHelper.Instance.SaveLocation(location, true);
                 }
-
+                SessionHelper.Instance.Locations.Add(location);
                 SelectedLocation = location;
                 if(StartNewWindow)
                     showWeatherForm(SelectedLocation);
@@ -151,8 +151,7 @@ namespace WeatherUI.Forms
             this.Invoke((MethodInvoker)delegate ()
             {
                 this.Hide();
-                List<Location> locations = new List<Location> { location };
-                WeatherForm form = new WeatherForm(locations);
+                WeatherForm form = new WeatherForm();
                 form.Closed += (s, args) => this.Close();
                 form.Show();
             });

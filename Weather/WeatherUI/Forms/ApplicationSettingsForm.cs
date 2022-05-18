@@ -41,10 +41,9 @@ namespace WeatherUI.Forms
             form.Show();
         }
 
-        private void ApplicationSettingsForm_KeyDown(object sender, KeyEventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
-                this.Close();
+            this.Close();
         }
     }
 }

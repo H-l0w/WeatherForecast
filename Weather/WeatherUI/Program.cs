@@ -17,8 +17,10 @@ namespace WeatherUI
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (ConfigHelper.Instance.GetLocations().Count > 0)
-                Application.Run(new WeatherForm(ConfigHelper.Instance.GetLocations(), isApiKeyValid));
+            if (ConfigHelper.Instance.GetLocations().Count > 0) {
+                SessionHelper.Instance.Locations = ConfigHelper.Instance.GetLocations();
+                Application.Run(new WeatherForm(isApiKeyValid));
+            }
             else 
                 Application.Run(new LocationForm(true, isApiKeyValid));
         }
