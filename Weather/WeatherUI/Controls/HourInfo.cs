@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using WeatherLibrary.Enums;
 using WeatherLibrary.Factories;
+using WeatherLibrary.Objects;
 
 namespace WeatherUI.Controls
 {
@@ -13,6 +14,7 @@ namespace WeatherUI.Controls
         public string Value { get; set; }
         private string toolTipText;
         private ToolTip toolTip;
+        public Location Location_ { get; set; }
 
         public HourInfo()
         {
@@ -47,6 +49,15 @@ namespace WeatherUI.Controls
             SetToolTips();
         }
 
+        private void SetColor()
+        {   
+            string hour = DateTime.UtcNow.AddSeconds(Location_.TimeOffset).ToString("HH");
+            if (Time.Contains(hour) && Location_.IsTimeZoneSet)
+                this.BackColor = Color.Cyan;
+            else
+                this.BackColor = Color.FromKnownColor(KnownColor.Control);
+        }
+
         private void SetToolTips()
         {
             string weather = EnumFactory.GetDescription(Code);
@@ -67,12 +78,13 @@ namespace WeatherUI.Controls
             lblTime.Text = Time;
             lblValue.Text = Value;
             SetToolTips();
+            SetColor();
         }
 
 
         private void MouseHoverOverControl(object sender, EventArgs e) =>this.BackColor = Color.Coral;
 
-        private void MouseLeaveOverControl(object sender, EventArgs e) => this.BackColor = Color.FromKnownColor(KnownColor.Control);
+        private void MouseLeaveOverControl(object sender, EventArgs e) => SetColor();
 
         private void SubscribeEvents()
         {

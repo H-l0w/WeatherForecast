@@ -50,7 +50,7 @@ namespace WeatherUI.Forms
             if (dataGridLocations.RowCount > 0)
                 deleteRows();
 
-            List<Location> locations = await getLocaions();
+            List<Location> locations = await GetLocaions();
 
             if ((locations == null && !ignoreMessageBox))
             {
@@ -97,7 +97,7 @@ namespace WeatherUI.Forms
             await fillDataGrid();
         }
 
-        private async Task<List<Location>> getLocaions()
+        private async Task<List<Location>> GetLocaions()
         {
             try
             {
@@ -126,13 +126,23 @@ namespace WeatherUI.Forms
             }
         }
 
-        private void dataGridLocations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridLocations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 dataGridLocations.Rows[e.RowIndex].Selected = true;
                 Location location = getLocationFromGrid(e.RowIndex);
-
+                var res = await HttpHelper.Instance.SendRequest(UrlHelper.Instance.BuildUrlTimeZone(location.Latitude, 
+                    location.Longitude, SessionHelper.Instance.ApiKeyTimeZone));
+                if (res.Contains("OK")) {
+                    int start = res.IndexOf("gmtOffset") + 11;
+                    int end = res.IndexOf("dst");
+                    int len = end - start;
+                    string timeOffsetRaw = res.Substring(start, len).Replace(",", "").Replace("\n", "").Replace("\"", "");
+                    int timeOffset = Convert.ToInt32(timeOffsetRaw);
+                    location.IsTimeZoneSet = true;
+                    location.TimeOffset = timeOffset;
+                }
                 if(checkSaveSelectedLocation.CheckState == CheckState.Checked)
                 {
                     ConfigHelper.Instance.SaveLocation(location, true);

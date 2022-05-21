@@ -155,6 +155,8 @@ namespace WeatherUI.Forms
             sb.AppendLine("Country: " + SessionHelper.Instance.Locations[actualLocationIndex].Country);
             sb.AppendLine("Continent: " + SessionHelper.Instance.Locations[actualLocationIndex].Continent);
             sb.AppendLine("Elevenation: " + WeatherForecast.Elevation.ToString() + "m");
+            if (SessionHelper.Instance.Locations[actualLocationIndex].IsTimeZoneSet)
+                sb.AppendLine("Time offset: " + SessionHelper.Instance.Locations[actualLocationIndex].TimeOffset / 3600 + "h");
             lblLocationInfo.Text = sb.ToString();
         }
 
@@ -172,6 +174,7 @@ namespace WeatherUI.Forms
                 Infos[index].Code = hour.Code;
                 Infos[index].Time = time;
                 Infos[index].Value = value;
+                Infos[index].Location_ = SessionHelper.Instance.Locations[actualLocationIndex];
                 Infos[index].Reload();
                 index++;
             }
@@ -199,6 +202,7 @@ namespace WeatherUI.Forms
                     Location = new Point(x, y),
                     Width = OneWeatherForecastFieldSize.Width,
                     Height = OneWeatherForecastFieldSize.Height,
+                    Location_ = SessionHelper.Instance.Locations[actualLocationIndex]
                 };
                 Infos.Add(hourInfo);
 

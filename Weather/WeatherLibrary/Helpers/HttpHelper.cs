@@ -6,7 +6,7 @@ namespace WeatherLibrary.Helpers
 {
     public class HttpHelper
     {
-        public static readonly Lazy<HttpHelper> helper =
+        private static readonly Lazy<HttpHelper> helper =
             new Lazy<HttpHelper>(() => new HttpHelper());
 
         public static HttpHelper Instance { get { return helper.Value; } }

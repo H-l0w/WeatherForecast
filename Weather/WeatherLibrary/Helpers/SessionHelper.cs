@@ -25,5 +25,6 @@ namespace WeatherLibrary.Helpers
         public Color Background { get; set; }
         public List<Location> Locations { get; set; }
         public string ApiKey { get; set; }
+        public readonly string ApiKeyTimeZone = "5S59T3KP40N3";
     }
 }

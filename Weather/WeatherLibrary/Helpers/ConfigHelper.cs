@@ -138,6 +138,12 @@ namespace WeatherLibrary.Helpers
                         case 6:
                             location.Region = sb.ToString();
                             break;
+                        case 7:
+                            location.TimeOffset = Convert.ToInt32(sb.ToString());
+                            break;
+                        case 8:
+                            location.IsTimeZoneSet = Convert.ToBoolean(sb.ToString());
+                            break;
                     }
                     sb.Clear();
                 }
@@ -199,7 +205,7 @@ namespace WeatherLibrary.Helpers
 
         public void SaveLocation(Location location, bool append)
         {
-            string locationSerialize = $"{location.Latitude};{location.Longitude};{location.Name ?? string.Empty};{location.Continent ?? string.Empty};{location.Country ?? string.Empty};{location.Region ?? string.Empty};";
+            string locationSerialize = $"{location.Latitude};{location.Longitude};{location.Name ?? string.Empty};{location.Continent ?? string.Empty};{location.Country ?? string.Empty};{location.Region ?? string.Empty};{location.TimeOffset};{location.IsTimeZoneSet};";
             SaveConfig(dirName + locatationsFile, locationSerialize, append);
         }
 
@@ -225,7 +231,6 @@ namespace WeatherLibrary.Helpers
             string line = lines.FirstOrDefault(l => l.Contains("API Key"));
             string apiKey = line.Split(':')[1];
             apiKey = apiKey.Replace('"', ' ').Trim();
-            Debug.WriteLine(apiKey);
             return apiKey;
         }
     }
