@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace WeatherLibrary.Enums
+﻿namespace WeatherLibrary.Enums
 {
     public enum Icons
     {

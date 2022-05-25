@@ -60,7 +60,7 @@ namespace WeatherUI.Controls
 
         private void SetToolTips()
         {
-            string weather = EnumFactory.GetDescription(Code);
+            string weather = EnumHelper.GetDescription(Code);
 
             toolTipText = $"Time: {Time} Value: { Value} Weather: {weather.Remove(weather.Length - 4)}";
 
@@ -72,9 +72,9 @@ namespace WeatherUI.Controls
         public void Reload()
         {
             if (Code == null)
-                pctIcon.Image = Image.FromStream(IconFactory.GetIcon("Error.png"));
+                pctIcon.Image = Image.FromStream(IconRepo.GetIcon("Error"));
             else
-                pctIcon.Image = Image.FromStream(IconFactory.GetIcon(EnumFactory.GetDescription(Code)));
+                pctIcon.Image = Image.FromStream(IconRepo.GetIcon(EnumHelper.GetDescription(Code)));
             lblTime.Text = Time;
             lblValue.Text = Value;
             SetToolTips();

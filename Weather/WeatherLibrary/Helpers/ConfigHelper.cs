@@ -32,8 +32,6 @@ namespace WeatherLibrary.Helpers
                 File.Create(dirName + appSettingsFile).Close();
                 WriteDefaultValues();
             }
-            if (!Directory.Exists(dirName + @"\Icons\"))
-                Directory.CreateDirectory(dirName + @"\Icons\");
         }
 
         private List<string> ReadConfig(string filePath)

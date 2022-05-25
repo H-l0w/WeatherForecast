@@ -13,7 +13,7 @@ namespace WeatherUI.Forms
     public partial class LocationForm : FormBase
     {
 
-        private readonly LocationFactory locationFactory;
+        private readonly LocationRepo locationFactory;
         public Location SelectedLocation { get; set; }
         private bool StartNewWindow { get; set; }
         private bool isApiKeyValid;
@@ -24,7 +24,7 @@ namespace WeatherUI.Forms
         {
             StartNewWindow = startNewWindow;
             this.isApiKeyValid = isApiKeyValid;
-            locationFactory = new LocationFactory();
+            locationFactory = new LocationRepo();
             InitializeComponent();
             addColumns();
         }
@@ -62,7 +62,6 @@ namespace WeatherUI.Forms
                 MessageBox.Show("Unable to find location");
                 return;
             }
-
             
             if (locations == null) {
                 ignoreMessageBox = false;
@@ -150,13 +149,13 @@ namespace WeatherUI.Forms
                 SessionHelper.Instance.Locations.Add(location);
                 SelectedLocation = location;
                 if(StartNewWindow)
-                    showWeatherForm(SelectedLocation);
+                    ShowWeatherForm(SelectedLocation);
 
                 this.DialogResult = DialogResult.OK;
             }
         }
 
-        private void showWeatherForm(Location location)
+        private void ShowWeatherForm(Location location)
         {
             this.Invoke((MethodInvoker)delegate ()
             {

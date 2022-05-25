@@ -102,10 +102,11 @@ namespace WeatherUI.Forms
             // lblLocationInfo
             // 
             this.lblLocationInfo.AutoSize = true;
+            this.lblLocationInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblLocationInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblLocationInfo.Location = new System.Drawing.Point(12, 66);
             this.lblLocationInfo.Name = "lblLocationInfo";
-            this.lblLocationInfo.Size = new System.Drawing.Size(102, 21);
+            this.lblLocationInfo.Size = new System.Drawing.Size(104, 23);
             this.lblLocationInfo.TabIndex = 5;
             this.lblLocationInfo.Text = "Lorem ipsum";
             // 
@@ -194,6 +195,7 @@ namespace WeatherUI.Forms
             this.Name = "WeatherForm";
             this.Text = "WeatherForm";
             this.Load += new System.EventHandler(this.WeatherForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WeatherForm_KeyDown);
             this.Resize += new System.EventHandler(this.WeatherForm_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -2,89 +2,90 @@
 
 namespace WeatherLibrary.Enums
 {
-    public enum WeatherCodes : int
+    public enum WeatherCodes
     {
-        [Description("Clear Sky.png")]
+        [Description("Clear_Sky")]
         ClearSky = 0,
 
-        [Description("Cloudy.png")]
+        [Description("Cloudy")]
         MainlyClear = 1,
 
-        [Description("Cloudy.png")]
+        [Description("Cloudy")]
         PartlyCloudy = 2,
 
-        [Description("Cloudy.png")]
+        [Description("Cloudy")]
         OverCast = 3,
 
-        [Description("Fog.png")]
+        [Description("Fog")]
         Fog = 45,
-        [Description("Fog.png")]
+
+        [Description("Fog")]
         RimeFog = 48,
 
-        [Description("Drizzle.png")]
+        [Description("Drizzle")]
         LightDrizzle = 51,
 
-        [Description("Drizzle.png")]
+        [Description("Drizzle")]
         ModerateDrizzle = 53,
 
-        [Description("Drizzle.png")]
+        [Description("Drizzle")]
         IntenseDrizzle = 55,
 
-        [Description("Drizzle.png")]
+        [Description("Drizzle")]
         LightFreezingDrizzle = 56,
 
-        [Description("Drizzle.png")]
+        [Description("Drizzle")]
         InstenseFreezingDrizzle = 57,
 
-        [Description("Light Rain.png")]
+        [Description("Light_Rain")]
         SlightRain = 61,
 
-        [Description("Medium Rain.png")]
+        [Description("Medium_Rain")]
         ModerateRain = 63,
 
-        [Description("Heavy Rain.png")]
+        [Description("Heavy_Rain")]
         HeavyRain = 65,
 
-        [Description("Freezing Rain.png")]
+        [Description("Freezing_Rain")]
         LightFreezingRain = 66,
 
-        [Description("Freezing Rain.png")]
+        [Description("Freezing_Rain")]
         IntenseFreezingRain = 67,
 
-        [Description("Freezing Rain.png")]
+        [Description("Freezing_Rain")]
         SlightSnowFall = 71,
 
-        [Description("Snowing.png")]
+        [Description("Snowing")]
         ModerateSnowFall = 73,
 
-        [Description("Snowing.png")]
+        [Description("Snowing")]
         HeavySnowFall = 75,
 
-        [Description("Snowing.png")]
+        [Description("Snowing")]
         SnowGrains = 77,
 
-        [Description("Light Rain.png")]
+        [Description("Light_Rain")]
         SlightRainShower = 80,
 
-        [Description("Shower.png")]
+        [Description("Shower")]
         ModerateRainShower = 81,
 
-        [Description("Shower.png")]
+        [Description("Shower")]
         HeavyRainShower = 82,
 
-        [Description("Shower.png")]
+        [Description("Shower")]
         LightSnowShower = 85,
 
-        [Description("Snowing.png")]
+        [Description("Snowing")]
         HeavySnowShower = 86,
 
-        [Description("Storm.png")]
+        [Description("Storm")]
         ThunderStorm = 95,
 
-        [Description("Storm.png")]
+        [Description("Storm")]
         LightStormWithHails = 96,
 
-        [Description("Storm.png")]
+        [Description("Storm")]
         HeavyStormWithHails = 99
     }
 }
