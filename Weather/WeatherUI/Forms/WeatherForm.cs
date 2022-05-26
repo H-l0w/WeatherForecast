@@ -21,7 +21,7 @@ namespace WeatherUI.Forms
         private readonly WeatherRepo weatherFactory = new WeatherRepo();
         private List<HourInfo> Infos = new List<HourInfo>();
         private Data DataEnum = Data.Temperature;
-        private int actualDay;
+        private DateTime actualDate;
         private bool isApiKeyValid;
 
         private Point bottomRight;
@@ -49,7 +49,7 @@ namespace WeatherUI.Forms
             {
                 WeatherForecast = await weatherFactory.GetWeatherForecast(SessionHelper.Instance.Locations[actualLocationIndex]);
             }).GetAwaiter().GetResult();
-            actualDay = WeatherForecast.Info.Times[0].Value.Day;
+            actualDate = WeatherForecast.Info.Times[0].GetValueOrDefault();
 
 
             InitializeComponent();
@@ -104,7 +104,7 @@ namespace WeatherUI.Forms
 
         private void SetNewLocation()
         {
-            actualDay = WeatherForecast.Info.Times[0].Value.Day;
+            actualDate = WeatherForecast.Info.Times[0].GetValueOrDefault();
             if (actualLocationIndex <= 0)
                 btnPrevious.Enabled = false;
             else
@@ -139,10 +139,9 @@ namespace WeatherUI.Forms
 
         private void UpdateInfoLabel()
         {
-            DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay);
             CultureInfo info = new CultureInfo("en");
-            string day = info.DateTimeFormat.GetDayName(date.DayOfWeek);
-            lblInfo.Text = $"{EnumHelper.GetDescription(DataEnum)} for location {SessionHelper.Instance.Locations[actualLocationIndex].Name} | Date: {date.ToString("dd.MM.yyyy")} - {day}";
+            string day = info.DateTimeFormat.GetDayName(actualDate.DayOfWeek);
+            lblInfo.Text = $"{EnumHelper.GetDescription(DataEnum)} for location {SessionHelper.Instance.Locations[actualLocationIndex].Name} | Date: {actualDate.ToString("dd.MM.yyyy")} - {day}";
         }
 
         private void ShowWeatherForecast()
@@ -173,6 +172,7 @@ namespace WeatherUI.Forms
                 time = hour.Time.ToString("HH:mm");
                 Infos[index].Code = hour.Code;
                 Infos[index].Time = time;
+                Infos[index].Day = actualDate.Day;
                 Infos[index].Value = value;
                 Infos[index].Location_ = SessionHelper.Instance.Locations[actualLocationIndex];
                 Infos[index].Reload();
@@ -199,6 +199,7 @@ namespace WeatherUI.Forms
                     Code = hour.Code,
                     Time = hour.Time.ToString("HH:mm"),
                     Value = ConversionHelper.ConvertNullableDouble(hour.Temperature) + " °C",
+                    Day = actualDate.Day,
                     Location = new Point(x, y),
                     Width = OneWeatherForecastFieldSize.Width,
                     Height = OneWeatherForecastFieldSize.Height,
@@ -229,23 +230,23 @@ namespace WeatherUI.Forms
 
         private void btnNextDay_Click(object sender, EventArgs e)
         {
-            actualDay++;
-            ChangeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
+            actualDate = actualDate.AddDays(1);
+            ChangeHourInfo(actualDate);
             UpdateInfoLabel();
             btnPreviousDay.Enabled = true;
 
-            if (actualDay - DateTime.Now.Day > 5)
+            if ((actualDate - DateTime.Now).TotalDays > 5)
                 btnNextDay.Enabled = false;
         }
 
         private void bntPreviousDay_Click(object sender, EventArgs e)
         {
-            actualDay--;
-            ChangeHourInfo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, actualDay));
+            actualDate = actualDate.AddDays(-1);
+            ChangeHourInfo(actualDate);
             UpdateInfoLabel();
             btnNextDay.Enabled = true;
 
-            if (actualDay - DateTime.Now.Day == 0)
+            if ((actualDate - DateTime.Now).TotalDays < 1)
                 btnPreviousDay.Enabled = false;
         }
 

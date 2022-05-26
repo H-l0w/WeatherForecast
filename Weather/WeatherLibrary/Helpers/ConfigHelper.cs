@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using WeatherLibrary.Objects;
 
@@ -26,8 +26,10 @@ namespace WeatherLibrary.Helpers
         {
             if (!Directory.Exists(dirName))
                 Directory.CreateDirectory(dirName);
+
             if (!File.Exists(dirName + locatationsFile))
                 File.Create(dirName + locatationsFile).Close();
+
             if (!File.Exists(dirName + appSettingsFile)) {
                 File.Create(dirName + appSettingsFile).Close();
                 WriteDefaultValues();
@@ -36,17 +38,7 @@ namespace WeatherLibrary.Helpers
 
         private List<string> ReadConfig(string filePath)
         {
-            List<string> lines = new List<string>();
-
-            using (StreamReader sr = new StreamReader(filePath)) {
-                while (!sr.EndOfStream) {
-                    lines.Add(sr.ReadLine());
-                }
-
-                if (sr != null)
-                    sr.Dispose();
-            }
-            return lines;
+            return File.ReadAllLines(filePath).ToList();
         }
 
         public List<Location> GetLocations()
@@ -65,86 +57,31 @@ namespace WeatherLibrary.Helpers
         private void WriteDefaultValues()
         {
             SaveConfig(dirName + appSettingsFile, "Background:255;255;255;255;", false);
-            SaveConfig(dirName + appSettingsFile, "API Key: \"\"", true);
+            SaveConfig(dirName + appSettingsFile, "API Key - Locations: \"\"", true);
+            SaveConfig(dirName + appSettingsFile, "API Key - Timezone: \"\"", true);
         }
 
-        private Color GetColorFromString(string s)
+        private Color GetColorFromString(string color)
         {
-            StringBuilder sb = new StringBuilder();
-            int A = 255;
-            int R = 255;
-            int B = 255;
-            int G = 255;
-            int semicolonCount = 0;
-            for (int i = 11; i < s.Length; i++) {
-                if (s[i] != ';')
-                    sb.Append(s[i]);
-                else {
-                    semicolonCount++;
-                    switch (semicolonCount) {
-                        case 1:
-                            A = Convert.ToInt32(sb.ToString());
-                            sb.Clear();
-                            break;
-                        case 2:
-                            R = Convert.ToInt32(sb.ToString());
-                            sb.Clear();
-                            break;
-                        case 3:
-                            G = Convert.ToInt32(sb.ToString());
-                            sb.Clear();
-                            break;
-                        case 4:
-                            B = Convert.ToInt32(sb.ToString());
-                            sb.Clear();
-                            break;
-                    }
-                }
-            }
-            return Color.FromArgb(A, R, G, B);
+            string[] split = color.Split(';');
+            string[] splitName = split[0].Split(':');
+            return Color.FromArgb(Convert.ToInt32(splitName[1]), Convert.ToInt32(split[1]), 
+                Convert.ToInt32(split[2]), Convert.ToInt32(split[3]));
         }
 
         private Location GetLocationFromString(string locationString)
         {
             if (string.IsNullOrEmpty(locationString))
                 return null;
-            StringBuilder sb = new StringBuilder();
-            int semicolonCount = 0;
             Location location = new Location();
+            string[] split = locationString.Split(';');
+            PropertyInfo[] props = typeof(Location).GetProperties();
+            for (int i = 0; i < split.Length; i++) {
+                if (i == props.Length)
+                    return location;
 
-            for (int i = 0; i < locationString.Length; i++) {
-                if (locationString[i] != ';')
-                    sb.Append(locationString[i]);
-                else {
-                    semicolonCount++;
-                    switch (semicolonCount) {
-                        case 1:
-                            location.Latitude = (float)Convert.ToDouble(sb.ToString());
-                            break;
-                        case 2:
-                            location.Longitude = (float)Convert.ToDouble(sb.ToString());
-                            break;
-                        case 3:
-                            location.Name = sb.ToString();
-                            break;
-                        case 4:
-                            location.Continent = sb.ToString();
-                            break;
-                        case 5:
-                            location.Country = sb.ToString();
-                            break;
-                        case 6:
-                            location.Region = sb.ToString();
-                            break;
-                        case 7:
-                            location.TimeOffset = Convert.ToInt32(sb.ToString());
-                            break;
-                        case 8:
-                            location.IsTimeZoneSet = Convert.ToBoolean(sb.ToString());
-                            break;
-                    }
-                    sb.Clear();
-                }
+                var converted = Convert.ChangeType(split[i], props[i].PropertyType);
+                props[i].SetValue(location, converted);
             }
             return location;
         }
@@ -223,10 +160,10 @@ namespace WeatherLibrary.Helpers
             }
         }
 
-        public string GetApiKey()
+        public string GetApiKey(string name)
         {
             List<string> lines = ReadConfig(dirName + appSettingsFile);
-            string line = lines.FirstOrDefault(l => l.Contains("API Key"));
+            string line = lines.FirstOrDefault(l => l.Contains(name));
             string apiKey = line.Split(':')[1];
             apiKey = apiKey.Replace('"', ' ').Trim();
             return apiKey;

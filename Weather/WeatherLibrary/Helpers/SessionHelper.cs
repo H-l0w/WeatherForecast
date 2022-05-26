@@ -17,11 +17,12 @@ namespace WeatherLibrary.Helpers
             Background = ConfigHelper.Instance.GetColor();
             Locations = new List<Location>();
             Locations.AddRange(ConfigHelper.Instance.GetLocations());
-            ApiKey = ConfigHelper.Instance.GetApiKey();
+            ApiKeyLocations = ConfigHelper.Instance.GetApiKey("API Key - Locations");
+            ApiKeyTimeZone = ConfigHelper.Instance.GetApiKey("API Key - Timezone");
         }
         public Color Background { get; set; }
         public List<Location> Locations { get; set; }
-        public string ApiKey { get; set; }
-        public readonly string ApiKeyTimeZone = "5S59T3KP40N3";
+        public string ApiKeyLocations { get; set; }
+        public string ApiKeyTimeZone { get; set; }
     }
 }

@@ -24,7 +24,6 @@ namespace WeatherLibrary.Helpers
 
         public string BuildUrlTimeZone(double latitude, double longitude, string ApiKey)
         {
-            //http://api.timezonedb.com/v2.1/get-time-zone?key=5S59T3KP40N3&format=xml&by=position&lat=40.689247&lng=-74.044502
             return $"{BaseUrlTimeZone}?key={ApiKey}&format=json&by=position&lat={latitude}&lng={longitude}";
         }
 

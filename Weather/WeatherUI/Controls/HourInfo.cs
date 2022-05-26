@@ -11,6 +11,7 @@ namespace WeatherUI.Controls
     {
         public WeatherCodes? Code { get; set; }
         public string Time { get; set; }
+        public int Day { get; set; }
         public string Value { get; set; }
         private string toolTipText;
         private ToolTip toolTip;
@@ -52,7 +53,7 @@ namespace WeatherUI.Controls
         private void SetColor()
         {   
             string hour = DateTime.UtcNow.AddSeconds(Location_.TimeOffset).ToString("HH");
-            if (Time.Contains(hour) && Location_.IsTimeZoneSet)
+            if (Time.Contains(hour) && Location_.IsTimeZoneSet && Day == DateTime.UtcNow.Day)
                 this.BackColor = Color.Cyan;
             else
                 this.BackColor = Color.FromKnownColor(KnownColor.Control);
@@ -62,7 +63,7 @@ namespace WeatherUI.Controls
         {
             string weather = EnumHelper.GetDescription(Code);
 
-            toolTipText = $"Time: {Time} Value: { Value} Weather: {weather.Remove(weather.Length - 4)}";
+            toolTipText = $"Time: {Time} Value: { Value} Weather: {weather}";
 
             toolTip.SetToolTip(this, toolTipText);
             toolTip.SetToolTip(pctIcon, toolTipText);

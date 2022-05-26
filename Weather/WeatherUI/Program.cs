@@ -12,7 +12,8 @@ namespace WeatherUI
         {
             ConfigHelper.Instance.CreateConfig();
             bool isApiKeyValid = true;
-            if (string.IsNullOrEmpty(SessionHelper.Instance.ApiKey))
+            if (string.IsNullOrEmpty(SessionHelper.Instance.ApiKeyLocations) || 
+                string.IsNullOrEmpty(SessionHelper.Instance.ApiKeyTimeZone))
                 isApiKeyValid = false;
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
