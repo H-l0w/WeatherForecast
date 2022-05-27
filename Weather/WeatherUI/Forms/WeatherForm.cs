@@ -118,6 +118,7 @@ namespace WeatherUI.Forms
             UpdateInfoLabel();
             SetToolTips();
             RefreshListBox();
+            btnPreviousDay.Enabled = false;
 
             if (actualLocationIndex + 1 < SessionHelper.Instance.Locations.Count)
                 btnNext.Enabled = true;
@@ -175,6 +176,19 @@ namespace WeatherUI.Forms
                 Infos[index].Day = actualDate.Day;
                 Infos[index].Value = value;
                 Infos[index].Location_ = SessionHelper.Instance.Locations[actualLocationIndex];
+                Infos[index].Detail = new Detail
+                {
+                    Temperature = hour.Temperature.GetValueOrDefault(),
+                    ApperentTemperature = hour.ApperentTemperature.GetValueOrDefault(),
+                    RainPrecipitation = hour.RainPrecipitation.GetValueOrDefault(),
+                    CloudCover = hour.CloudCover.GetValueOrDefault(),
+                    WindSpeed = hour.WindSpeed.GetValueOrDefault(),
+                    SnowHeight = hour.SnowHeight.GetValueOrDefault(),
+                    DewPoint = hour.DewPoint.GetValueOrDefault(),
+                    Humidity = hour.Humidity.GetValueOrDefault(),
+                    Name = SessionHelper.Instance.Locations[actualLocationIndex].Name,
+                    Time = actualDate.AddHours(hour.Time.Hour)
+                };
                 Infos[index].Reload();
                 index++;
             }
@@ -203,7 +217,20 @@ namespace WeatherUI.Forms
                     Location = new Point(x, y),
                     Width = OneWeatherForecastFieldSize.Width,
                     Height = OneWeatherForecastFieldSize.Height,
-                    Location_ = SessionHelper.Instance.Locations[actualLocationIndex]
+                    Location_ = SessionHelper.Instance.Locations[actualLocationIndex],
+                    Detail = new Detail
+                    {
+                        Temperature = hour.Temperature.GetValueOrDefault(),
+                        ApperentTemperature = hour.ApperentTemperature.GetValueOrDefault(),
+                        RainPrecipitation = hour.RainPrecipitation.GetValueOrDefault(),
+                        CloudCover = hour.CloudCover.GetValueOrDefault(),
+                        WindSpeed = hour.WindSpeed.GetValueOrDefault(),
+                        SnowHeight = hour.SnowHeight.GetValueOrDefault(),
+                        DewPoint = hour.DewPoint.GetValueOrDefault(),
+                        Humidity = hour.Humidity.GetValueOrDefault(),
+                        Name = SessionHelper.Instance.Locations[actualLocationIndex].Name,
+                        Time = actualDate.AddHours(hour.Time.Hour)
+                    }
                 };
                 Infos.Add(hourInfo);
 
@@ -246,7 +273,7 @@ namespace WeatherUI.Forms
             UpdateInfoLabel();
             btnNextDay.Enabled = true;
 
-            if ((actualDate - DateTime.Now).TotalDays < 1)
+            if ((actualDate - DateTime.Now).TotalDays <= 0)
                 btnPreviousDay.Enabled = false;
         }
 

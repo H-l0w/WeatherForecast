@@ -10,6 +10,7 @@ namespace WeatherUI.Forms
         {
             InitializeComponent();
             txtApiKey.Text = SessionHelper.Instance.ApiKeyLocations;
+            txtTimezoneApiKey.Text = SessionHelper.Instance.ApiKeyTimeZone;
         }
 
         private void btnCancel_Click(object sender, EventArgs e) => this.Close();
@@ -17,8 +18,14 @@ namespace WeatherUI.Forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             SessionHelper.Instance.ApiKeyLocations = txtApiKey.Text;
-            ConfigHelper.Instance.EditConfig(Path.Combine(ConfigHelper.Instance.dirName, ConfigHelper.Instance.appSettingsFile), "API Key", "API Key: "+"\"" + txtApiKey.Text + "\"");
+            ConfigHelper.Instance.EditConfig(Path.Combine(ConfigHelper.Instance.dirName, ConfigHelper.Instance.appSettingsFile), "API Key - Locations", "API Key - Locations: " + "\"" + txtApiKey.Text + "\"");
             this.Close();
+        }
+
+        private void btnSaveTimezoneApiKey_Click(object sender, EventArgs e)
+        {
+            SessionHelper.Instance.ApiKeyTimeZone = txtTimezoneApiKey.Text;
+            ConfigHelper.Instance.EditConfig(Path.Combine(ConfigHelper.Instance.dirName, ConfigHelper.Instance.appSettingsFile), "API Key - Timezone", "API Key - Timezone: " +"\"" + txtTimezoneApiKey.Text + "\"");
         }
     }
 }

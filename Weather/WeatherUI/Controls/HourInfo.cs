@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using WeatherLibrary.Enums;
 using WeatherLibrary.Factories;
 using WeatherLibrary.Objects;
+using WeatherUI.Forms;
 
 namespace WeatherUI.Controls
 {
@@ -16,6 +17,7 @@ namespace WeatherUI.Controls
         private string toolTipText;
         private ToolTip toolTip;
         public Location Location_ { get; set; }
+        public Detail Detail { get; set; }
 
         public HourInfo()
         {
@@ -98,7 +100,17 @@ namespace WeatherUI.Controls
             pctIcon.MouseLeave += MouseLeaveOverControl;
             lblTime.MouseLeave += MouseLeaveOverControl;
             lblValue.MouseLeave += MouseLeaveOverControl;
+
+            this.DoubleClick += InfoDoubleClick;
+            pctIcon.DoubleClick += InfoDoubleClick;
+            lblTime.DoubleClick += InfoDoubleClick;
+            lblValue.DoubleClick += InfoDoubleClick;
         }
 
+        private void InfoDoubleClick(object sender, EventArgs e)
+        {
+            WeatherDetailForm detailForm = new WeatherDetailForm(Detail);
+            detailForm.Show();
+        }
     }
 }

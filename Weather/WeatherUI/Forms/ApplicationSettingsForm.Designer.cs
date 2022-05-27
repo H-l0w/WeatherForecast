@@ -52,7 +52,7 @@
             this.btnEditApiKey.Name = "btnEditApiKey";
             this.btnEditApiKey.Size = new System.Drawing.Size(260, 40);
             this.btnEditApiKey.TabIndex = 1;
-            this.btnEditApiKey.Text = "Edit API key";
+            this.btnEditApiKey.Text = "Edit API keys";
             this.btnEditApiKey.UseVisualStyleBackColor = true;
             this.btnEditApiKey.Click += new System.EventHandler(this.btnEditApiKey_Click);
             // 
