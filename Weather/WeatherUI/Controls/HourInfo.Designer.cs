@@ -29,9 +29,11 @@ namespace WeatherUI.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pctIcon = new System.Windows.Forms.PictureBox();
             this.lblValue = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
+            this.menuRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pctIcon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,6 +66,12 @@ namespace WeatherUI.Controls
             this.lblTime.TabIndex = 2;
             this.lblTime.Text = "xx:xx";
             // 
+            // menuRightClick
+            // 
+            this.menuRightClick.Name = "menuRightClick";
+            this.menuRightClick.Size = new System.Drawing.Size(181, 26);
+            this.menuRightClick.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuRightClick_ItemClicked);
+            // 
             // HourInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -86,5 +94,6 @@ namespace WeatherUI.Controls
         private System.Windows.Forms.PictureBox pctIcon;
         private System.Windows.Forms.Label lblValue;
         private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.ContextMenuStrip menuRightClick;
     }
 }

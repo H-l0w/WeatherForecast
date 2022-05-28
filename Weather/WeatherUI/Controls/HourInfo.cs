@@ -50,6 +50,7 @@ namespace WeatherUI.Controls
             Reload();
             SetControls();
             SetToolTips();
+            SetRightMenuClick();
         }
 
         private void SetColor()
@@ -72,6 +73,12 @@ namespace WeatherUI.Controls
             toolTip.SetToolTip(lblTime, toolTipText);
             toolTip.SetToolTip(lblValue, toolTipText);
         }
+
+        private void SetRightMenuClick()
+        {
+            menuRightClick.Items.Add("Show detail");
+        }
+
         public void Reload()
         {
             if (Code == null)
@@ -105,12 +112,31 @@ namespace WeatherUI.Controls
             pctIcon.DoubleClick += InfoDoubleClick;
             lblTime.DoubleClick += InfoDoubleClick;
             lblValue.DoubleClick += InfoDoubleClick;
+
+            this.MouseClick += InfoMouseClick;
+            pctIcon.MouseClick += InfoMouseClick;
+            lblTime.MouseClick += InfoMouseClick;
+            lblValue.MouseClick += InfoMouseClick;
         }
 
         private void InfoDoubleClick(object sender, EventArgs e)
         {
             WeatherDetailForm detailForm = new WeatherDetailForm(Detail);
             detailForm.Show();
+        }
+
+        private void InfoMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                menuRightClick.Show(Cursor.Position.X, Cursor.Position.Y);
+        }
+
+        private void menuRightClick_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem.Text == "Show detail") {
+                WeatherDetailForm form = new WeatherDetailForm(Detail);
+                form.Show();
+            }
         }
     }
 }

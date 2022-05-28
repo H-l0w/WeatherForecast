@@ -1,5 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using WeatherLibrary.Enums;
+using WeatherLibrary.Factories;
 
 namespace WeatherUI.Forms
 {
@@ -9,23 +11,26 @@ namespace WeatherUI.Forms
         public ChangeDataForm(Data actualData)
         {
             InitializeComponent();
-            cmbData.SelectedIndex = (int)actualData;
+            FillListBox();
+            listBoxData.SelectedIndex = (int)actualData;
         }
 
-        private void cmbData_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            DataEnum = (Data)cmbData.SelectedIndex;
-        }
-
-        private void btnConfirm_Click(object sender, System.EventArgs e)
+        private void btnConfirm_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void ChangeDataForm_Load(object sender, System.EventArgs e)
+        private void FillListBox()
         {
+            foreach (Data data in (Data[]) Enum.GetValues(typeof(Data))) {
+                listBoxData.Items.Add(EnumHelper.GetDescription(data));
+            }
+        }
 
+        private void listBoxData_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataEnum = (Data)listBoxData.SelectedIndex;
         }
     }
 }
