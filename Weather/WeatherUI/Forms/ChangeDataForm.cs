@@ -32,5 +32,11 @@ namespace WeatherUI.Forms
         {
             DataEnum = (Data)listBoxData.SelectedIndex;
         }
+
+        private void ChangeDataForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) 
+                this.Close();
+        }
     }
 }

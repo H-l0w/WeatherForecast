@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows.Forms;
 using WeatherLibrary.Objects;
 
 namespace WeatherUI.Forms
@@ -31,6 +32,12 @@ namespace WeatherUI.Forms
             sb.AppendLine($"Dew point: {_detail.DewPoint}");
             sb.AppendLine($"Humidity: {_detail.Humidity}");
             lblInfo.Text = sb.ToString();
+        }
+
+        private void WeatherDetailForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
         }
     }
 }

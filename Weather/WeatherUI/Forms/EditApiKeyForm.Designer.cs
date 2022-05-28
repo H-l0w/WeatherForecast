@@ -122,7 +122,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EditApiKeyForm";
-            this.Text = "EditApiKeyForm";
+            this.Text = "Edis API keys";
             this.ResumeLayout(false);
             this.PerformLayout();
 

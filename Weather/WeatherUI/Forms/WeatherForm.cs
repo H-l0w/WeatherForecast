@@ -16,11 +16,11 @@ namespace WeatherUI.Forms
 {
     public partial class WeatherForm : FormBase
     {
-        private WeatherForecast WeatherForecast { get; set; }
+        private WeatherForecast weatherForecast { get; set; }
         private int actualLocationIndex = 0; 
         private readonly WeatherRepo weatherFactory = new WeatherRepo();
         private List<HourInfo> Infos = new List<HourInfo>();
-        private Data DataEnum = Data.Temperature;
+        private Data dataEnum = Data.Temperature;
         private DateTime actualDate;
         private bool isApiKeyValid;
 
@@ -33,8 +33,8 @@ namespace WeatherUI.Forms
         private Point topLeftForecast;
         private Point bottomRightForecast;
 
-        Size WeatherForecastFieldSize;
-        Size OneWeatherForecastFieldSize;
+        private Size weatherForecastFieldSize;
+        private Size oneWeatherForecastFieldSize;
 
 
         private const int EdgePadding = 20;
@@ -47,13 +47,12 @@ namespace WeatherUI.Forms
             this.isApiKeyValid = isApiKeyValid;
             Task.Run(async () =>
             {
-                WeatherForecast = await weatherFactory.GetWeatherForecast(SessionHelper.Instance.Locations[actualLocationIndex]);
+                weatherForecast = await weatherFactory.GetWeatherForecast(SessionHelper.Instance.Locations[actualLocationIndex]);
             }).GetAwaiter().GetResult();
-            actualDate = WeatherForecast.Info.Times[0].GetValueOrDefault();
-
+            actualDate = weatherForecast.Info.Times[0].GetValueOrDefault();
 
             InitializeComponent();
-            this.KeyPreview = true;
+            this.Text = "Weather - " + SessionHelper.Instance.Locations[0].Name;
             if (SessionHelper.Instance.Locations.Count == 1)
                 btnNext.Enabled = false;
         }
@@ -104,14 +103,14 @@ namespace WeatherUI.Forms
 
         private void SetNewLocation()
         {
-            actualDate = WeatherForecast.Info.Times[0].GetValueOrDefault();
+            actualDate = weatherForecast.Info.Times[0].GetValueOrDefault();
             if (actualLocationIndex <= 0)
                 btnPrevious.Enabled = false;
             else
                 btnPrevious.Enabled = true;
 
             if (actualLocationIndex != -1) {
-                Task.Run(async () => WeatherForecast = await weatherFactory.GetWeatherForecast(SessionHelper.Instance.Locations[actualLocationIndex])).GetAwaiter().GetResult();
+                Task.Run(async () => weatherForecast = await weatherFactory.GetWeatherForecast(SessionHelper.Instance.Locations[actualLocationIndex])).GetAwaiter().GetResult();
                 ShowWeatherForecast();
                 ChangeHourInfo(DateTime.Now);
             }
@@ -119,6 +118,7 @@ namespace WeatherUI.Forms
             SetToolTips();
             RefreshListBox();
             btnPreviousDay.Enabled = false;
+            btnNextDay.Enabled = true;
 
             if (actualLocationIndex + 1 < SessionHelper.Instance.Locations.Count)
                 btnNext.Enabled = true;
@@ -130,19 +130,21 @@ namespace WeatherUI.Forms
         {
             actualLocationIndex--;
             SetNewLocation();
+            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             actualLocationIndex++;
             SetNewLocation();
+            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
         }
 
         private void UpdateInfoLabel()
         {
             CultureInfo info = new CultureInfo("en");
             string day = info.DateTimeFormat.GetDayName(actualDate.DayOfWeek);
-            lblInfo.Text = $"{EnumHelper.GetDescription(DataEnum)} for location {SessionHelper.Instance.Locations[actualLocationIndex].Name} | Date: {actualDate.ToString("dd.MM.yyyy")} - {day}";
+            lblInfo.Text = $"{EnumHelper.GetDescription(dataEnum)} for location {SessionHelper.Instance.Locations[actualLocationIndex].Name} | Date: {actualDate.ToString("dd.MM.yyyy")} - {day}";
         }
 
         private void ShowWeatherForecast()
@@ -154,7 +156,7 @@ namespace WeatherUI.Forms
             sb.AppendLine("Location: " + SessionHelper.Instance.Locations[actualLocationIndex].Region);
             sb.AppendLine("Country: " + SessionHelper.Instance.Locations[actualLocationIndex].Country);
             sb.AppendLine("Continent: " + SessionHelper.Instance.Locations[actualLocationIndex].Continent);
-            sb.AppendLine("Elevenation: " + WeatherForecast.Elevation.ToString() + "m");
+            sb.AppendLine("Elevenation: " + weatherForecast.Elevation.ToString() + "m");
             if (SessionHelper.Instance.Locations[actualLocationIndex].IsTimeZoneSet)
                 sb.AppendLine("Time offset: " + SessionHelper.Instance.Locations[actualLocationIndex].TimeOffset / 3600 + "h");
             lblLocationInfo.Text = sb.ToString();
@@ -166,9 +168,9 @@ namespace WeatherUI.Forms
             string time = string.Empty;
             int index = 0;
 
-            foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(WeatherForecast, dateTime).HourInfos)
+            foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(weatherForecast, dateTime).HourInfos)
             {
-                value = hour.GetType().GetProperty(DataEnum.ToString()).GetValue(hour).ToString() + EnumHelper.GetUnit(DataEnum);
+                value = hour.GetType().GetProperty(dataEnum.ToString()).GetValue(hour).ToString() + EnumHelper.GetUnit(dataEnum);
 
                 time = hour.Time.ToString("HH:mm");
                 Infos[index].Code = hour.Code;
@@ -199,13 +201,13 @@ namespace WeatherUI.Forms
             int count = 0;
             int x = topLeftForecast.X;
             int y = topLeftForecast.Y;
-            foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(WeatherForecast, DateTime.Now).HourInfos)
+            foreach (WeatherHourInfo hour in weatherFactory.GetDailyInfo(weatherForecast, DateTime.Now).HourInfos)
             {
                 if (count > 4)
                 {
                     x = topLeftForecast.X;
                     count = 0;
-                    y += OneWeatherForecastFieldSize.Height;
+                    y += oneWeatherForecastFieldSize.Height;
                 }
 
                 HourInfo hourInfo = new HourInfo
@@ -215,8 +217,8 @@ namespace WeatherUI.Forms
                     Value = ConversionHelper.ConvertNullableDouble(hour.Temperature) + " °C",
                     Day = actualDate.Day,
                     Location = new Point(x, y),
-                    Width = OneWeatherForecastFieldSize.Width,
-                    Height = OneWeatherForecastFieldSize.Height,
+                    Width = oneWeatherForecastFieldSize.Width,
+                    Height = oneWeatherForecastFieldSize.Height,
                     Location_ = SessionHelper.Instance.Locations[actualLocationIndex],
                     Detail = new Detail
                     {
@@ -234,22 +236,22 @@ namespace WeatherUI.Forms
                 };
                 Infos.Add(hourInfo);
 
-                x += OneWeatherForecastFieldSize.Width;
+                x += oneWeatherForecastFieldSize.Width;
                 Controls.Add(hourInfo);
                 count++;
             }
             btnChangeData.Location = new Point(x, y);
-            btnChangeData.Size = new Size(OneWeatherForecastFieldSize.Width, OneWeatherForecastFieldSize.Height);
+            btnChangeData.Size = new Size(oneWeatherForecastFieldSize.Width, oneWeatherForecastFieldSize.Height);
         }
 
         private void btnChangeData_Click(object sender, EventArgs e)
         {
-            ChangeDataForm form = new ChangeDataForm(DataEnum);
+            ChangeDataForm form = new ChangeDataForm(dataEnum);
             var result = form.ShowDialog();
 
             if (result == DialogResult.OK)
             {
-                DataEnum = form.DataEnum;
+                dataEnum = form.DataEnum;
                 ChangeHourInfo(DateTime.Now);
                 UpdateInfoLabel();
             }
@@ -329,8 +331,8 @@ namespace WeatherUI.Forms
             topLeftForecast = new Point(EdgePadding + btnPrevious.Width + EdgePadding, EdgePadding + btnApplicationSettings.Height);
             bottomRightForecast = new Point(btnPrevious.Width, bottomLeft.Y - EdgePadding);
 
-            WeatherForecastFieldSize = new Size(topRightForecast.X - topLeftForecast.Y, bottomRightForecast.Y - topRightForecast.Y);
-            OneWeatherForecastFieldSize = new Size(WeatherForecastFieldSize.Width / 5, WeatherForecastFieldSize.Height / 5);
+            weatherForecastFieldSize = new Size(topRightForecast.X - topLeftForecast.Y, bottomRightForecast.Y - topRightForecast.Y);
+            oneWeatherForecastFieldSize = new Size(weatherForecastFieldSize.Width / 5, weatherForecastFieldSize.Height / 5);
         }
 
         private void RepositionWeatherControls()
@@ -343,18 +345,18 @@ namespace WeatherUI.Forms
                 if (count > 4)
                 {
                     count = 0;
-                    y += OneWeatherForecastFieldSize.Height;
+                    y += oneWeatherForecastFieldSize.Height;
                     x = topLeftForecast.X;
                 }
                 info.Location = new Point(x, y);
-                info.Width = OneWeatherForecastFieldSize.Width;
-                info.Height = OneWeatherForecastFieldSize.Height;
-                x += OneWeatherForecastFieldSize.Width;
+                info.Width = oneWeatherForecastFieldSize.Width;
+                info.Height = oneWeatherForecastFieldSize.Height;
+                x += oneWeatherForecastFieldSize.Width;
                 info.SetControls();
                 count++;
             }
             btnChangeData.Location = new Point(x, y);
-            btnChangeData.Size = new Size(OneWeatherForecastFieldSize.Width, OneWeatherForecastFieldSize.Height);
+            btnChangeData.Size = new Size(oneWeatherForecastFieldSize.Width, oneWeatherForecastFieldSize.Height);
 
             lblLocations.Location = new Point(topRight.X,
                                               topRight.Y + btnAddNewLocation.Height + btnApplicationSettings.Height + ButtonPadding + ButtonPadding);
@@ -394,6 +396,7 @@ namespace WeatherUI.Forms
         private void listLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             actualLocationIndex = listLocation.SelectedIndex;
+            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
             SetNewLocation();
         }
 

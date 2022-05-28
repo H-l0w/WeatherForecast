@@ -89,11 +89,10 @@
             this.Controls.Add(this.btnEditApiKey);
             this.Controls.Add(this.bntChangeTheme);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ApplicationSettingsForm";
-            this.Text = "ApplicationSettingsForm";
+            this.Text = "Application settings";
             this.ResumeLayout(false);
 
         }

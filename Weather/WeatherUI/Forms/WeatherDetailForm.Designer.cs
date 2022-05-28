@@ -62,9 +62,10 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WeatherDetailForm";
-            this.Text = "WeatherDetail";
+            this.Text = "Weather detail";
             this.Deactivate += new System.EventHandler(this.WeatherDetailForm_Deactivate);
             this.Load += new System.EventHandler(this.WeatherDetailForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WeatherDetailForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

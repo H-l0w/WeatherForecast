@@ -69,7 +69,8 @@ namespace WeatherUI.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ChangeDataForm";
-            this.Text = "ChangeDataForm";
+            this.Text = "Change data";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ChangeDataForm_KeyDown);
             this.ResumeLayout(false);
 
         }

@@ -11,6 +11,7 @@ namespace WeatherUI.Forms
             this.BackColor = SessionHelper.Instance.Background;
             this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
+            this.KeyPreview = true;
         }
     }
 }
