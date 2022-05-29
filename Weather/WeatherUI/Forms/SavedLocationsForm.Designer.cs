@@ -68,6 +68,7 @@ namespace WeatherUI.Forms
             this.dataGridLocations.Name = "dataGridLocations";
             this.dataGridLocations.ReadOnly = true;
             this.dataGridLocations.RowTemplate.Height = 25;
+            this.dataGridLocations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridLocations.Size = new System.Drawing.Size(460, 150);
             this.dataGridLocations.TabIndex = 3;
             // 

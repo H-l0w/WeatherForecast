@@ -72,6 +72,7 @@ namespace WeatherUI.Forms
             this.dataGridLocations.ReadOnly = true;
             this.dataGridLocations.RowHeadersVisible = false;
             this.dataGridLocations.RowTemplate.Height = 25;
+            this.dataGridLocations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridLocations.Size = new System.Drawing.Size(520, 295);
             this.dataGridLocations.TabIndex = 2;
             this.dataGridLocations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridLocations_CellDoubleClick);

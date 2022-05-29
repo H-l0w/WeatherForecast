@@ -119,6 +119,7 @@ namespace WeatherUI.Forms
             RefreshListBox();
             btnPreviousDay.Enabled = false;
             btnNextDay.Enabled = true;
+            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
 
             if (actualLocationIndex + 1 < SessionHelper.Instance.Locations.Count)
                 btnNext.Enabled = true;
@@ -130,14 +131,12 @@ namespace WeatherUI.Forms
         {
             actualLocationIndex--;
             SetNewLocation();
-            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             actualLocationIndex++;
             SetNewLocation();
-            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
         }
 
         private void UpdateInfoLabel()
@@ -396,7 +395,6 @@ namespace WeatherUI.Forms
         private void listLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             actualLocationIndex = listLocation.SelectedIndex;
-            this.Text = "Weather - " + SessionHelper.Instance.Locations[actualLocationIndex].Name;
             SetNewLocation();
         }
 
@@ -409,7 +407,11 @@ namespace WeatherUI.Forms
                 int index = listLocation.SelectedIndex;
                 SessionHelper.Instance.Locations.RemoveAt(index);
                 ConfigHelper.Instance.RemoveLocation(index);
-
+                if (SessionHelper.Instance.Locations.Count == 0) {
+                    CloseThisAndShowLoctaions();
+                    return;
+                }
+                SetNewLocation();
                 try {
                     listLocation.Items.RemoveAt(index);
                 }
