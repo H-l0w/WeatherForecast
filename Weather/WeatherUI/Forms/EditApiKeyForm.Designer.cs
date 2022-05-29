@@ -71,7 +71,7 @@
             this.btnCancel.Location = new System.Drawing.Point(12, 260);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(360, 40);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -82,7 +82,7 @@
             this.btnSaveTimezoneApiKey.Location = new System.Drawing.Point(12, 214);
             this.btnSaveTimezoneApiKey.Name = "btnSaveTimezoneApiKey";
             this.btnSaveTimezoneApiKey.Size = new System.Drawing.Size(360, 40);
-            this.btnSaveTimezoneApiKey.TabIndex = 6;
+            this.btnSaveTimezoneApiKey.TabIndex = 4;
             this.btnSaveTimezoneApiKey.Text = "Save Timezone API key";
             this.btnSaveTimezoneApiKey.UseVisualStyleBackColor = true;
             this.btnSaveTimezoneApiKey.Click += new System.EventHandler(this.btnSaveTimezoneApiKey_Click);
@@ -93,7 +93,7 @@
             this.txtTimezoneApiKey.Location = new System.Drawing.Point(12, 173);
             this.txtTimezoneApiKey.Name = "txtTimezoneApiKey";
             this.txtTimezoneApiKey.Size = new System.Drawing.Size(360, 35);
-            this.txtTimezoneApiKey.TabIndex = 5;
+            this.txtTimezoneApiKey.TabIndex = 3;
             // 
             // lblTimezoneApiKey
             // 

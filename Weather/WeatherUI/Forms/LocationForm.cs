@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using WeatherLibrary.Factories;
 using WeatherLibrary.Objects;
 using WeatherLibrary.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace WeatherUI.Forms
 {
@@ -17,6 +18,7 @@ namespace WeatherUI.Forms
         private bool StartNewWindow { get; set; }
         private bool isApiKeyValid;
         private bool ignoreMessageBox;
+        public bool IsLocationAdded = false;
 
         List<Location> Locations { get; set; }
         public LocationForm(bool startNewWindow, bool isApiKeyValid = true)
@@ -129,26 +131,31 @@ namespace WeatherUI.Forms
             if (e.RowIndex >= 0)
             {
                 dataGridLocations.Rows[e.RowIndex].Selected = true;
-                Location location = getLocationFromGrid(e.RowIndex);
+                Location location = GetLocationFromGrid(e.RowIndex);
                 var res = await HttpHelper.Instance.SendRequest(UrlHelper.Instance.BuildUrlTimeZone(location.Latitude, 
                     location.Longitude, SessionHelper.Instance.ApiKeyTimeZone));
-                if (res.Contains("OK")) {
-                    int start = res.IndexOf("gmtOffset") + 11;
-                    int end = res.IndexOf("dst");
-                    int len = end - start;
-                    string timeOffsetRaw = res.Substring(start, len).Replace(",", "").Replace("\n", "").Replace("\"", "");
-                    int timeOffset = Convert.ToInt32(timeOffsetRaw);
-                    location.IsTimeZoneSet = true;
-                    location.TimeOffset = timeOffset;
+
+                try {
+                    dynamic json = JObject.Parse(res);
+                    if (json.status == "OK") {
+                        int offset = json.gmtOffset;
+                        location.IsTimeZoneSet = true;
+                        location.TimeOffset = offset;
+                    }
                 }
-                if(checkSaveSelectedLocation.CheckState == CheckState.Checked)
-                {
-                    ConfigHelper.Instance.SaveLocation(location, true);
+                catch (Exception ex) {
+                    location.TimeOffset = 0;
+                    location.IsTimeZoneSet= false;
                 }
-                SessionHelper.Instance.Locations.Add(location);
-                SelectedLocation = location;
-                if(StartNewWindow)
-                    ShowWeatherForm(SelectedLocation);
+                finally {
+                    if (checkSaveSelectedLocation.CheckState == CheckState.Checked) {
+                        ConfigHelper.Instance.SaveLocation(location, true);
+                    }
+                    SessionHelper.Instance.Locations.Add(location);
+                    SelectedLocation = location;
+                    if (StartNewWindow)
+                        ShowWeatherForm(SelectedLocation);
+                }
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -165,7 +172,7 @@ namespace WeatherUI.Forms
             });
         }
 
-        private Location getLocationFromGrid(int rowIndex)
+        private Location GetLocationFromGrid(int rowIndex)
         {
             DataGridViewRow row = dataGridLocations.Rows[rowIndex];
 
@@ -186,6 +193,24 @@ namespace WeatherUI.Forms
         {
             ApplicationSettingsForm form = new ApplicationSettingsForm();
             form.Show();
+        }
+
+        private void btnAddLocationManually_Click(object sender, EventArgs e)
+        {
+            ManualLocationAddForm form = new ManualLocationAddForm();
+            var res = form.ShowDialog();
+
+            if (res == DialogResult.OK) {
+                if (checkSaveSelectedLocation.CheckState == CheckState.Checked) {
+                    ConfigHelper.Instance.SaveLocation(form.NewLocation, true);
+                }
+                SessionHelper.Instance.Locations.Add(form.NewLocation);
+                SelectedLocation = form.NewLocation;
+                IsLocationAdded = true;
+
+                if (SessionHelper.Instance.Locations.Count == 1)
+                    ShowWeatherForm(form.NewLocation);
+            }
         }
     }
 }

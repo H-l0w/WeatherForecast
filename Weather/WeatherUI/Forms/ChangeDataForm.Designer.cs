@@ -40,7 +40,7 @@ namespace WeatherUI.Forms
             this.btnConfirm.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(270, 49);
-            this.btnConfirm.TabIndex = 1;
+            this.btnConfirm.TabIndex = 2;
             this.btnConfirm.Text = "Confirm";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
@@ -55,7 +55,7 @@ namespace WeatherUI.Forms
             this.listBoxData.MultiColumn = true;
             this.listBoxData.Name = "listBoxData";
             this.listBoxData.Size = new System.Drawing.Size(269, 244);
-            this.listBoxData.TabIndex = 2;
+            this.listBoxData.TabIndex = 1;
             this.listBoxData.SelectedIndexChanged += new System.EventHandler(this.listBoxData_SelectedIndexChanged);
             // 
             // ChangeDataForm

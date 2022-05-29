@@ -93,7 +93,7 @@ namespace WeatherUI.Forms
             LocationForm form = new LocationForm(false);
             var result = form.ShowDialog();
 
-            if(result == DialogResult.OK)
+            if(result == DialogResult.OK || form.IsLocationAdded)
             {
                 FillListBox();
                 if (SessionHelper.Instance.Locations.Count > 1)
@@ -151,7 +151,7 @@ namespace WeatherUI.Forms
             lblLocationDetails.Text = SessionHelper.Instance.Locations[actualLocationIndex].Name;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Latitute: " + SessionHelper.Instance.Locations[actualLocationIndex].Latitude.ToString());
-            sb.AppendLine("Longitude" + SessionHelper.Instance.Locations[actualLocationIndex].Longitude.ToString());
+            sb.AppendLine("Longitude: " + SessionHelper.Instance.Locations[actualLocationIndex].Longitude.ToString());
             sb.AppendLine("Location: " + SessionHelper.Instance.Locations[actualLocationIndex].Region);
             sb.AppendLine("Country: " + SessionHelper.Instance.Locations[actualLocationIndex].Country);
             sb.AppendLine("Continent: " + SessionHelper.Instance.Locations[actualLocationIndex].Continent);
@@ -407,6 +407,9 @@ namespace WeatherUI.Forms
                 int index = listLocation.SelectedIndex;
                 SessionHelper.Instance.Locations.RemoveAt(index);
                 ConfigHelper.Instance.RemoveLocation(index);
+                if (index > 0 && index >= actualLocationIndex)
+                    actualLocationIndex--;
+
                 if (SessionHelper.Instance.Locations.Count == 0) {
                     CloseThisAndShowLoctaions();
                     return;
