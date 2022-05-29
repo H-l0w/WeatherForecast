@@ -19,7 +19,7 @@ namespace WeatherLibrary.Helpers
         }
         public string BuildUrlWeather(double latitude, double longitude)
         {
-            return $"{BaseUrlWeatherForecast}?latitude={latitude.ToString()}&longitude={longitude.ToString()+WeatherParams}";
+            return $"{BaseUrlWeatherForecast}?latitude={latitude}&longitude={longitude+WeatherParams}";
         }
 
         public string BuildUrlTimeZone(double latitude, double longitude, string ApiKey)

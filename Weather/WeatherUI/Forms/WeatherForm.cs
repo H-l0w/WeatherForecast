@@ -84,7 +84,7 @@ namespace WeatherUI.Forms
         private void btnApplicationSettings_Click(object sender, EventArgs e)
         {
             ApplicationSettingsForm form = new ApplicationSettingsForm();
-            var res = form.ShowDialog();
+            form.ShowDialog();
             FillListBox();
         }
 

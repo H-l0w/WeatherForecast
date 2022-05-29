@@ -100,7 +100,6 @@ namespace WeatherLibrary.Helpers
             List<string> lines = ReadConfig(dirName + appSettingsFile);
             foreach (string line in lines) {
                 if (line.Contains("Background")) {
-                    Color color = GetColorFromString(line);
                     return GetColorFromString(line);
                 }
             }

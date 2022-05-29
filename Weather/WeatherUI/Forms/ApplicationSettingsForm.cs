@@ -19,7 +19,6 @@ namespace WeatherUI.Forms
 
             if (result == DialogResult.OK)
             {
-                Color color = colorDialog.Color;
                 ConfigHelper.Instance.AddColorTheme(colorDialog.Color);
                 SessionHelper.Instance.Background = colorDialog.Color;
                 foreach (Form form in Application.OpenForms)
