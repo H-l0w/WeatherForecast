@@ -19,7 +19,6 @@ namespace WeatherUI.Forms
         {
             SessionHelper.Instance.ApiKeyLocations = txtApiKey.Text;
             ConfigHelper.Instance.EditConfig(Path.Combine(ConfigHelper.Instance.dirName, ConfigHelper.Instance.appSettingsFile), "API Key - Locations", "API Key - Locations: " + "\"" + txtApiKey.Text + "\"");
-            this.Close();
         }
 
         private void btnSaveTimezoneApiKey_Click(object sender, EventArgs e)

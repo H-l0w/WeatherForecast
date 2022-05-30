@@ -67,9 +67,6 @@ namespace WeatherUI.Forms
 
         private void WeatherForm_Load(object sender, EventArgs e)
         {
-            if (!isApiKeyValid)
-                MessageBox.Show("Api key is not, please edit it in config file");
-
             ShowWeatherForecast();
             RecalculatePoints();
             AddHourInfo();
@@ -79,6 +76,9 @@ namespace WeatherUI.Forms
             btnPreviousDay.Enabled = false;
             btnPrevious.Enabled = false;
             lblInfo.Location = new Point(topLeftForecast.X, EdgePadding);
+
+            if (!isApiKeyValid)
+                MessageBox.Show("Api key is not valid, please edit it in settings");
         }
 
         private void btnApplicationSettings_Click(object sender, EventArgs e)

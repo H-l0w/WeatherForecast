@@ -59,7 +59,7 @@ namespace WeatherUI.Forms
                 return;
             }
 
-            if (locations.Count == 0) {
+            if (locations == null || locations.Count == 0) {
                 MessageBox.Show("Unable to find location");
                 return;
             }
